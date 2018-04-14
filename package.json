@@ -1,0 +1,39 @@
+{
+  "name": "mean-blog",
+  "version": "1.0.0",
+  "description": "A blog built using mean stack",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kezzy007/mean-blog.git"
+  },
+  "author": "Kadiri Kazeem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kezzy007/mean-blog/issues"
+  },
+  "homepage": "https://github.com/kezzy007/mean-blog#readme",
+  "devDependencies": {
+    "@angular/cli": "^1.7.3",
+    "nodemon": "^1.17.3"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "express-fileupload": "^0.4.0",
+    "g": "^2.0.1",
+    "google-auth-library": "^1.4.0",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "mongoose-timestamp": "^0.6.0",
+    "nodemailer": "^4.6.4",
+    "passport": "*",
+    "passport-jwt": "^3.0.1",
+    "uid-generator": "^1.0.0"
+  }
+}
