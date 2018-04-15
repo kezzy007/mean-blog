@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared.module';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,8 +11,9 @@ import { UserModule } from './modules/user/user.module';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { LoadingIconComponent } from './components/loading-icon/loading-icon.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+
+import { LoginService } from './components/login/services/login-service.service';
 
 
 const routes: Routes =  [
@@ -23,11 +25,11 @@ const routes: Routes =  [
   declarations: [
     AppComponent,
     LoginComponent,
-    LoadingIconComponent,
     NavbarComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
@@ -35,7 +37,7 @@ const routes: Routes =  [
     UserModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [ LoginService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

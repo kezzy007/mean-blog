@@ -6,7 +6,6 @@ import { MomentModule } from 'angular2-moment';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ToasterService, ToasterModule } from 'angular5-toaster';
 
-import { ModalComponent } from './components/modal/modal.component';
 import { LoadingIconComponent } from './components/loading-icon/loading-icon.component';
 
 
@@ -24,7 +23,6 @@ import { LoadingIconComponent } from './components/loading-icon/loading-icon.com
     ],
     exports: [
         MomentModule,
-        ModalComponent,
         LoadingIconComponent,
         MDBBootstrapModule,
         FormsModule,
@@ -32,7 +30,6 @@ import { LoadingIconComponent } from './components/loading-icon/loading-icon.com
         BrowserAnimationsModule
     ],
     declarations: [
-        ModalComponent,
         LoadingIconComponent
     ],
     providers: [ ToasterService ]
