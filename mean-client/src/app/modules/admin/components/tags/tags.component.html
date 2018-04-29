@@ -1,3 +1,103 @@
-<p>
-  tags works!
-</p>
+
+<!--This is the view holding the categories details-->
+<!--This section holds the sidebar with admin functions and displays the categories in a table-->
+<div class="row">
+
+    <div class="col-md-8  col-md-offset-1">
+      <br/>
+        <div class="row">
+            <form class="form-inline" (ngSubmit)="addNewTag()">
+
+  
+                
+                  <div class="form-group">
+                    <!-- <div class="alert {{ session()->get('status')=='success'?'alert-success':'alert-danger'}}">
+                      {{ session()->get('status')=='success' ?
+                      'Tag added':'Operation Failed'}}
+                    </div> -->
+                  </div>
+                
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="tag_name" 
+                                type="text"
+                                class="form-control"
+                                name="name" 
+                                value=""
+                                #name="ngModel"
+                                [(ngModel)]="tag.name"
+                                placeholder="Tag title"
+                                required autofocus>
+  
+                    </div>
+                </div>
+  
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="tag_slug" 
+                                type="text" 
+                                class="form-control"
+                                name="slug" 
+                                #slug="ngModel"
+                                value=""
+                                [(ngModel)]="tag.slug"
+                                placeholder="Tag slug"
+                                required>
+  
+                    </div>
+                </div>
+  
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-warning text-bold">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            &nbsp;Add Tag
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+  
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Tag Title</th>
+              <th>Tag slug</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+  
+            <tr *ngFor="let tag of tags; trackBy: tagListTracker">
+                <td>{{ tag.name }}</td>
+                <td>{{ tag.slug }}</td>
+                <td>
+                  <button class="btn btn-primary"
+                          id="{{ $blog_tag->id }}"
+                          onclick="editTag(tag)">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                      &nbsp;&nbsp;Edit
+                  </button>
+                </td>
+            </tr>
+  
+  
+          <tr *ngIf="tags.length > 0">
+              <td colspan="3">
+                <div class="panel panel-default">
+                <div class="panel-body">
+                  *You haven't created any blog tags.
+                </div>
+                </div>
+              </td>
+            </tr>
+  
+          </tbody>
+  
+        </table>
+  
+    </div>
+  
+  </div>
+  

@@ -12,3 +12,9 @@ const TagsSchema = mongoose.Schema({
 });
 
 const Tags = module.exports = mongoose.model('Tags', TagsSchema);
+
+module.exports.getAllTags = (callback) => {
+
+    Tags.find({},callback);
+
+}
