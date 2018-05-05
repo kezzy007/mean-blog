@@ -15,7 +15,8 @@
 <div class="row mx-0">
 <div class="sidebar col-md-3 pull-left">
   <aside style="height:80%;position:fixed;overflow:scroll;overflow-x:hidden;">
-      <li class="dropdown" style="list-style:none;">
+    <ul>
+      <li class="" style="list-style-type:none;">
 
         <a [routerLink]="['posts']" class="dropdown-toggle text-bold"
             data-toggle="dropdown"
@@ -25,11 +26,31 @@
             <i class="fa fa-clipboard" aria-hidden="true"></i>
             Posts
         </a>
-
-        <!-- <ul class="dropdown-menu">
-          <li><a href="#">All</a></li>
-        </ul> -->
       </li>
+      <li class="" style="list-style-type:none;">
+
+        <a [routerLink]="['tags']" class="dropdown-toggle text-bold"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false" style="font-size:16px;">
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+            Tags
+        </a>
+      </li>
+      <li class="" style="list-style-type:none;">
+
+        <a [routerLink]="['categories']" class="dropdown-toggle text-bold"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false" style="font-size:16px;">
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+            Categories
+        </a>
+      </li>
+    </ul>
+
   </aside>
 </div>
 

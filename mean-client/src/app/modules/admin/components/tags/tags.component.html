@@ -1,9 +1,9 @@
 
 <!--This is the view holding the categories details-->
 <!--This section holds the sidebar with admin functions and displays the categories in a table-->
-<div class="row">
+<div class="row w-100">
 
-    <div class="col-md-8  col-md-offset-1">
+    <div class="col-md-12">
       <br/>
         <div class="row">
             <form class="form-inline" (ngSubmit)="addNewTag()">
@@ -24,7 +24,7 @@
                                 class="form-control"
                                 name="name" 
                                 value=""
-                                #name="ngModel"
+                                #name
                                 [(ngModel)]="tag.name"
                                 placeholder="Tag title"
                                 required autofocus>
@@ -38,7 +38,7 @@
                                 type="text" 
                                 class="form-control"
                                 name="slug" 
-                                #slug="ngModel"
+                                #slug
                                 value=""
                                 [(ngModel)]="tag.slug"
                                 placeholder="Tag slug"
@@ -48,12 +48,10 @@
                 </div>
   
                 <div class="form-group">
-                    <div class="col-md-8">
                         <button type="submit" class="btn btn-warning text-bold">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             &nbsp;Add Tag
                         </button>
-                    </div>
                 </div>
             </form>
         </div>
@@ -74,8 +72,7 @@
                 <td>{{ tag.slug }}</td>
                 <td>
                   <button class="btn btn-primary"
-                          id="{{ $blog_tag->id }}"
-                          onclick="editTag(tag)">
+                          (click)="editTag(tag)">
                     <i class="fa fa-pencil-square" aria-hidden="true"></i>
                       &nbsp;&nbsp;Edit
                   </button>
@@ -83,7 +80,7 @@
             </tr>
   
   
-          <tr *ngIf="tags.length > 0">
+          <tr *ngIf="tags.length == 0">
               <td colspan="3">
                 <div class="panel panel-default">
                 <div class="panel-body">

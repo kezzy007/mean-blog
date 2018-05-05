@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class TagsService {
 
-  host = 'localhost:3200/admin';
+  host = 'http://localhost:3200/admin';
 
   constructor(
     private http: HttpClient
@@ -17,5 +17,10 @@ export class TagsService {
 
     return this.http.post<any>(this.host + '/tags', null).map(response => response);
 
+  }
+
+  addNewTag(tag): Observable<any> {
+
+    return this.http.post<any> (this.host + '/add-tag', {tag: tag}).map(response => response);
   }
 }

@@ -14,3 +14,9 @@ const CategoriesSchema = mongoose.Schema({
 });
 
 const Categories = module.exports = mongoose.model('Categories', CategoriesSchema);
+
+module.exports.getAllCategories = () => {
+
+    return Categories.find({});
+
+};

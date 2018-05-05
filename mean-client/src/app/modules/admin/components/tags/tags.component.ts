@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { TagsService } from './services/tags.service';
 
+interface ITags{
+  id: string;
+  name: string;
+  slug: string;
+}
 
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })
+
 export class TagsComponent implements OnInit {
 
-  tags = [];
+  tags: ITags[];
   tag = {
     name: '',
     slug: ''
@@ -32,7 +38,7 @@ export class TagsComponent implements OnInit {
 
           console.log(response);
 
-          this.tags = response;
+          this.tags = response.tags;
 
           subscription.unsubscribe();
 
@@ -42,10 +48,24 @@ export class TagsComponent implements OnInit {
 
   addNewTag() {
     console.log(this.tag);
+
+    this.tagsService.addNewTag(this.tag)
+        .subscribe(response => {
+
+          console.log(response);
+
+          this.tags.push(response.tag);
+
+        });
+
   }
 
   tagListTracker(index) {
     return index;
+  }
+
+  editTag(tag) {
+
   }
 
 }

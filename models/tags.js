@@ -13,8 +13,8 @@ const TagsSchema = mongoose.Schema({
 
 const Tags = module.exports = mongoose.model('Tags', TagsSchema);
 
-module.exports.getAllTags = (callback) => {
+module.exports.getAllTags = () => {
 
-    Tags.find({},callback);
+    return Tags.find({});
 
 }

@@ -1,18 +1,20 @@
 
   <div class="row mx-0">
-    <div class="col-md-10 offset-md-1 col-sm-10 col-lg-10">
+    <div class="col-12">
 
       <!--This section holds the post title field, update and preview buttton -->
-      <div class="row py-4">
+      <div class="row py-4 align-items-center">
         <div class="col-md-1 col-sm-4 ml-5 pt-1">
              Post:
         </div>
+
+        <!-- Post title -->
         <div class="col-md-5 col-sm-8 pl-0 ml-0">
           <input class="form-control pull-left" 
                   type="text"
                   id="title" 
                   name="title" 
-                  #title="ngModel"
+                  #title
                   [(ngModel)]="form.title" 
                   placeholder="Post title" 
                   required
@@ -21,18 +23,18 @@
         <div class="col-md-2 col-sm-4">
           <div class="media">
             <div class="media-body" style="padding-top:4%;">
-               <!-- Write either editing or posting --> as <span class="text-bold">{{ getUser().name }}</span> 
+               <!-- Write either editing or posting --> as <span class="text-bold">{{ getUser()?.name }}</span> 
             </div>
           </div>
         </div>
         <div class="col-md-3 col-sm-8">
 
           <button class="btn btn-primary" id="save_post_button"
-                  (click)="savePost()">
+                  (click)="savePost()"> Save
             <i class="fa fa-floppy-o" aria-hidden="true"></i>
             <!-- Write either updating or save -->
           </button>
-<!-- 
+          <!-- 
           <a href={{ isset($postEdit) ? route('admin.blog.preview',['slug'=>$blog_post->slug]):'#' }}
               target="_blank"
               id="blog_preview_button"
@@ -43,182 +45,189 @@
         </div><!--Buttons for saving and previewing posts are placed here-->
       </div>
 
-      <!--This section holds the categories dropdown-->
-      <div class="row" style="padding-top:1%;height:130px">
-        
-        <div class="col-md-5" style="padding-left:0px;margin-left:0px;height:40%;">
-          <select id="category_id" *ngIf="blogCategories" name="category" #category [(ngModel)]="form.category" class="form-control" required>
+      <div class="row">
+        <div class="col-md-10 col-sm-12">
+          <!--This section holds the categories dropdown and featured section-->
+          <div class="row" style="padding-top:1%;height:130px">
+            
+            <!-- Categories dropdown -->
+            <div class="col-md-6" style="padding-left:0px;margin-left:0px;height:40%;">
+              <select id="category_id" 
+                      *ngIf="categories" 
+                      name="category" 
+                      #category 
+                      [(ngModel)]="form.category" 
+                      (change)="setPostCategory($event)"
+                      class="form-control h-100 mt-0" 
+                      required>
 
-            <!--This sets the value for the first option to the current category of the post being edited-->
-            <option *ngFor="let blogCategory of blogCategories" value="{{ blogCategory.name }}">
-              
-                    {{ blogCategory.name }}
+                <!--This sets the value for the first option to the current category of the post being edited-->
+                <option *ngFor="let category of categories" value="{{ category.name }}">
                   
-            </option>
+                        {{ category.name }}
+                      
+                </option>
 
-          <!-- This section is used to loop through the categories for editing a post
-            @forelse($blog_categories as $blog_category)
+                
+              </select>
 
-              @if(isset($blog_post))
-                @if( $blog_category->id != $blog_post->category_id )
-                  <option value='{{ $blog_category->id }}'> {{ $blog_category->name }} </option>
-                @endif
-              @else
-                  <option value='{{ $blog_category->id }}'> {{ $blog_category->name }} </option>
-              @endif
+              <select *ngIf="!categories" class="form-control h-100 mt-0">
+                  <option>No categories found</option>
+              </select>
 
-            @empty
-
-              <option>No categories were found</option>
-
-            @endforelse -->
-
-          </select>
-
-          <select *ngIf="!blogCategories">
-              <option>No categories found</option>
-          </select>
-
-          <br/>
-          <textarea placeholder="Description"
-                    style="text-indent:1px; height:80px;"
-                    class="form-control"
-                    name="description"
-                    #description="ngModel"
-                    [(gnModel)]="form.description"
-                    id="description" required></textarea>
-        </div>
-
-      <input name="featured" id="featured" value='' [(ngModel)]="form.featured" #featured="ngModel" hidden required/>
-      <div class="col-md-5 col-sm-5 col-lg-5" style="height:40%;">
-          <table class="table-bordered col-md-12 col-sm-12 col-lg-12" style="border:1px solid #DBDBDB;height:34px;">
-            <tr>
-              <td class="prop-table">
-                <i class="fa fa-thumb-tack" aria-hidden="true"></i>
-                &nbsp;&nbsp;Featured
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </td>
-              <!-- <td class="prop-table" *ngIf="">
-                  &nbsp;&nbsp;
-                    @if(isset($blog_post))
-                      <span class="glyphicon
-                                  {{ $blog_post->featured == 1?'glyphicon-star':'glyphicon-star-empty'}}
-                                  fa-1x"
-                            onclick="togglePostFeatured()"
-                            id="postFeatured"
-                            style="margin-top:1.1%;">
-                      </span>&nbsp;&nbsp; Display post at top 
-                    @else
-                      <span class="glyphicon glyphicon-star-empty fa-1x"
-                            onclick="togglePostFeatured()"
-                            id="postFeatured"
-                            style="margin-top:1.1%;">
-                      </span>&nbsp;&nbsp;  Display post at top
-                    @endif
-              </td> -->
-              <td>
-                  <span class="glyphicon glyphicon-star-empty fa-1x"
-                        (click)="togglePostFeatured()"
-                        id="postFeatured"
-                        style="margin-top:1.1%;">
-                  </span>&nbsp;&nbsp;  Display post at top
-              </td>
-            </tr>
-          </table>
-
-          <table class="table-bordered col-md-12 col-sm-12 col-lg-12" 
-                  style="border:1px solid #DBDBDB;height:80px;margin-top:4.9%;">
-            <tr>
-              <td class="prop-table" style="padding-top: 0%;">
-                <i class="fa fa-bookmark" aria-hidden="true"></i>
-                &nbsp;&nbsp;Status
-                &nbsp;&nbsp;
-              </td>
-              <td class="prop-table radio-post-status">
-                  <!-- @if(isset($blog_post))
-                     &nbsp;&nbsp;
-                    
-                      <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                          value="draft" {{ $blog_post->status == 'draft' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Draft
-                  
-                          <br/>
-                     &nbsp;&nbsp;
-                    
-                     <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                          value="publish" {{ $blog_post->status == 'publish' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Publish
-                  
-                  @else -->
-                     &nbsp;&nbsp;
-                    
-                     <input type="radio" name="status" [(ngModel)]="form.status" #status="ngModel" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                          value="draft" checked="checked">&nbsp;&nbsp; Draft
-                          <br/>
-                     &nbsp;&nbsp;
-                    
-                     <input type="radio" name="status" [(ngModel)]="form.status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                          value="publish">&nbsp;&nbsp; Publish
-                  <!-- @endif -->
-              </td>
-            </tr>
-          </table>
-
-      </div>
-    </div>
-
-    <br/>
-
-      <!--This section holds the editor-->
-      <div class="row mx-0">
-        
-        <div class="col-md-8 offset-md-1 col-sm-12" style="padding-top:2%;">
-            <span id="posteditor" class="col-md-6 col-sm-6 col-lg-6"><span>
-        </div>
-      </div>
-
-    </div><!--Closes the section for the post fields-->
-
-    <!--Sidebar is placed here with some tweaking functionalities for the admin-->
-    <div class="sidebar col-md-2 col-sm-2 col-lg-2 pull-right">
-      <aside style="height:84%;position:fixed;border-left:1px solid #DBDBDB;
-                    overflow-x:hidden;padding-bottom:1.2%;padding-top:1%;"
-              class="col-md-2 col-sm-2 col-lg-2">
-
-        <div style="border-bottom:1px solid #DBDBDB;">
-
-          <h3><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Tags</h3>
-        </div>
-        <div style="min-height:90%;max-height:98%;
-              overflow:scroll;overflow-x:hidden;border:1px solid #DBDBDB;padding:2%;">
-
-            <div *ngFor="let blogTag of blogTags">
-              <input type="checkbox"
-                      class="post-tags"
-                      (onchange) = "toggleTag(blogTag)"
-                      style="margin-top: 0px !important; vertical-align: -1px"
-                      checked=""> {{ blogTag.name }}
               <br/>
             </div>
 
-            <div class="panel panel-default">
-              <div class="panel-body">
-                *No tags available.
-              </div>
+            <input name="featured" id="featured" value='' [(ngModel)]="form.featured" #featured hidden required/>
+            <div class="col-md-6 col-sm-5 col-lg-5" style="height:40%;">
+              <table class="table-bordered col-md-12 col-sm-12 col-lg-12 h-100 mt-0" style="border:1px solid #DBDBDB;height:34px;">
+                <tr>
+                  <td class="prop-table">
+                    <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                    &nbsp;&nbsp;Featured
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </td>
+                  <!-- <td class="prop-table" *ngIf="">
+                      &nbsp;&nbsp;
+                        @if(isset($blog_post))
+                          <span class="glyphicon
+                                      {{ $blog_post->featured == 1?'glyphicon-star':'glyphicon-star-empty'}}
+                                      fa-1x"
+                                onclick="togglePostFeatured()"
+                                id="postFeatured"
+                                style="margin-top:1.1%;">
+                          </span>&nbsp;&nbsp; Display post at top 
+                        @else
+                          <span class="glyphicon glyphicon-star-empty fa-1x"
+                                onclick="togglePostFeatured()"
+                                id="postFeatured"
+                                style="margin-top:1.1%;">
+                          </span>&nbsp;&nbsp;  Display post at top
+                        @endif
+                  </td> -->
+                  <td>
+                      <i class="fa fa-star-o fa-1x"
+                            (click)="togglePostFeatured($event)"
+                            id="postFeatured"
+                            style="margin-top:1.1%;">
+                    </i>&nbsp;&nbsp;  Display post at top
+                  </td>
+                </tr>
+              </table>
             </div>
+          </div>
+
+          <!-- Description and status field -->
+          <div class="row">
+
+            <!-- Description field -->
+            <div class="col-md-6">
+              <textarea placeholder="Description"
+                        style="text-indent:1px;"
+                        class="form-control h-100 mt-0"
+                        name="description"
+                        #description
+                        [(ngModel)]="form.description"
+                        id="description" required>
+              </textarea>
+            </div>
+
+            <!-- Status field -->
+            <div class="col-md-6">
+                <table class="table-bordered col-md-12 col-sm-12 col-lg-12 h-100 mt-0" 
+                        style="border:1px solid #DBDBDB;height:80px;margin-top:4.9%;">
+                  <tr>
+                    <td class="prop-table" style="padding-top: 0%;">
+                      <i class="fa fa-bookmark" aria-hidden="true"></i>
+                      &nbsp;&nbsp;Status
+                      &nbsp;&nbsp;
+                    </td>
+                    <td class="prop-table radio-post-status">
+                        <!-- @if(isset($blog_post))
+                          &nbsp;&nbsp;
+                          
+                            <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
+                                value="draft" {{ $blog_post->status == 'draft' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Draft
+                        
+                                <br/>
+                          &nbsp;&nbsp;
+                          
+                          <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
+                                value="publish" {{ $blog_post->status == 'publish' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Publish
+                        
+                        @else -->
+                          &nbsp;&nbsp;
+                          
+                          <input type="radio" 
+                                name="status" 
+                                [(ngModel)]="form.status" 
+                                #status 
+                                class="form-control" 
+                                style="margin-top: 0px !important; vertical-align: -1px;"
+                                value="draft" 
+                                checked="checked">&nbsp;&nbsp; Draft
+                                <br/>
+                          &nbsp;&nbsp;
+                          
+                          <input type="radio" 
+                                name="status" 
+                                [(ngModel)]="form.status" 
+                                class="form-control" 
+                                style="margin-top: 0px !important; vertical-align: -1px;"
+                                value="publish">&nbsp;&nbsp; Publish
+                        <!-- @endif -->
+                    </td>
+                  </tr>
+                </table>
+            </div>
+
+             <!--This section holds the editor-->
+             <div class="col-md-8 offset-md-1 col-sm-12" style="padding-top:2%;">
+              <angular-tinymce [(ngModel)]='form.content'></angular-tinymce>
+            </div>
+          </div>
 
         </div>
 
-      </aside>
+        <!--Sidebar is placed here with some tweaking functionalities for the admin-->
+        <div class="sidebar col-md-2 col-sm-12 pull-right">
+          <aside class="col-md-2">
 
-      <!--This sets the content of the blog post to edit in an hidden div and waits until the editor is loaded-->
-      <div style="display:none;" id="editPostContent">
-        <!-- @if(isset($blog_post))
-          {!! $blog_post->content !!}
-        @endif -->
+            <div style="border-bottom:1px solid #DBDBDB;">
+
+              <h3><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Tags</h3>
+            </div>
+            <div>
+
+                <div *ngFor="let tag of tags">
+                  
+                  <input type = "checkbox"
+                          name ="{{ tag.name }}"
+                          (change) = "toggleTag(tag)"
+                          style="margin-top: 0px !important; vertical-align: -1px"/> 
+                          {{ tag.name }}
+                  
+                </div>
+
+                <div *ngIf="!tags?.length > 0" class="panel panel-default">
+                  <div class="panel-body">
+                    *No tags available.
+                  </div>
+                </div>
+
+            </div>
+
+          </aside>
+
+          <!--This sets the content of the blog post to edit in an hidden div and waits until the editor is loaded-->
+          <div style="display:none;" id="editPostContent">
+            <!-- @if(isset($blog_post))
+              {!! $blog_post->content !!}
+            @endif -->
+          </div>
+          <!-- <div id="editPostId" style="display:none;">{{ isset($blog_post) ? $blog_post->id:'' }}</div> -->
+        </div>
       </div>
-      <!-- <div id="editPostId" style="display:none;">{{ isset($blog_post) ? $blog_post->id:'' }}</div> -->
-    </div>
-    <br/>
 
-</div>
 </div><!--Container is closed-->

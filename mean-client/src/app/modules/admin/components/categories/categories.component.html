@@ -1,3 +1,97 @@
-<p>
-  categories works!
-</p>
+
+<!--This is the view holding the categories details-->
+<!--This section holds the sidebar with admin functions and displays the categories in a table-->
+<div class="row w-100">
+
+  <div class="col-md-12">
+    <br/>
+      <div class="row">
+          <form class="form-inline" (ngSubmit)="addNewCategory()">
+
+
+              
+                <div class="form-group">
+                  <!-- <div class="alert {{ session()->get('status')=='success'?'alert-success':'alert-danger'}}">
+                    {{ session()->get('status')=='success' ?
+                    'Tag added':'Operation Failed'}}
+                  </div> -->
+                </div>
+              
+              <div class="form-group">
+                  <div class="col-md-6">
+                      <input type="text"
+                              class="form-control"
+                              name="name" 
+                              value=""
+                              #name
+                              [(ngModel)]="category.name"
+                              placeholder="Category title"
+                              required autofocus>
+
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-md-6">
+                      <input type="text" 
+                              class="form-control"
+                              name="slug" 
+                              #slug
+                              value=""
+                              [(ngModel)]="category.slug"
+                              placeholder="Category slug"
+                              required>
+
+                  </div>
+              </div>
+
+              <div class="form-group">
+                      <button type="submit" class="btn btn-warning text-bold">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          &nbsp;Add category
+                      </button>
+              </div>
+          </form>
+      </div>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Category Title</th>
+            <th>Category slug</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+
+          <tr *ngFor="let category of categories; trackBy: categoryListTracker">
+              <td>{{ category.name }}</td>
+              <td>{{ category.slug }}</td>
+              <td>
+                <button class="btn btn-primary"
+                        (click)="editCategory(category)">
+                  <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                    &nbsp;&nbsp;Edit
+                </button>
+              </td>
+          </tr>
+
+
+        <tr *ngIf="categories.length == 0">
+            <td colspan="3">
+              <div class="panel panel-default">
+              <div class="panel-body">
+                *You haven't created any blog category.
+              </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+  </div>
+
+</div>
