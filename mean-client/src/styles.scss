@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import './app/sass-files/variables';
+
+html{
+    height: 100%;
+}
+
+
+.sidebar {
+    border: 1px solid $siteBorderColor;
+}
+
+.featured-tab, .status-tab{
+    border: 1px solid $siteBorderColor;
+}
+
+.admin-routes-outlet{
+    color: $siteColor !important;
+}
+
+table th{
+    font-weight: bold;
+}

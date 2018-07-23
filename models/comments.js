@@ -19,3 +19,9 @@ const CommentsSchema = mongoose.Schema({
 CommentsSchema.plugin(mongooseTimestamps);
 
 const Comments = module.exports = mongoose.model('Comments', CommentsSchema);
+
+module.exports.getAllComments = () => {
+
+    return Comments.find({});
+
+}

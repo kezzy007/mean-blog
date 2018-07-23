@@ -51,6 +51,22 @@ router.post('/add-tag', (req, res) => {
 
 });
 
+router.post('/update-tag', (req, res) => {
+
+    var tag = req.body.tag;
+
+    tagsModel.updateOne({_id: tag._id}, tag, {new: 1}, (err, newTag) => {
+
+        console.log(newTag);
+
+        if(err) throw err;
+
+        return res.json({success: true, tag: newTag});
+
+    });
+
+});
+
 router.post('/categories', (req, res) => {
 
     categoriesModel.getAllCategories().then((categories) => {
@@ -69,7 +85,10 @@ router.post('/add-category', (req, res) => {
 
     new categoriesModel(req.body.category).save((err, category) => {
 
-        if(err) throw err;
+        if(err){
+            console.log(err);
+            throw err;
+        } 
 
         return res.json({success: true, category: category});
 
@@ -77,6 +96,22 @@ router.post('/add-category', (req, res) => {
 
 });
 
+
+router.post('/update-category', (req, res) => {
+
+    var category = req.body.category;
+
+    categoriesModel.updateOne({_id: category._id}, category, {new: 1}, (err, newCategory) => {
+
+        console.log(newCategory);
+
+        if(err) throw err;
+
+        return res.json({success: true, category: newCategory});
+
+    });
+
+});
 
 router.post('/save-post', (req,res) => {
 
@@ -92,5 +127,7 @@ router.post('/save-post', (req,res) => {
     });
 
 });
+
+
 
 module.exports = router;

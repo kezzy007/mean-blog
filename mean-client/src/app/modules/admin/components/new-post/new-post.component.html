@@ -1,16 +1,16 @@
 
   <div class="row mx-0">
-    <div class="col-12">
+    <div class="col-12 justify-content-start">
 
       <!--This section holds the post title field, update and preview buttton -->
       <div class="row py-4 align-items-center">
-        <div class="col-md-1 col-sm-4 ml-5 pt-1">
-             Post:
+        <div class="col-md-1 col-sm-4 ml-0 pt-1">
+             <h4>Post:</h4>
         </div>
 
         <!-- Post title -->
-        <div class="col-md-5 col-sm-8 pl-0 ml-0">
-          <input class="form-control pull-left" 
+        <div class="col-md-5 col-sm-8 pl-0 ml-1">
+          <input class="form-control pull-left pb-0" 
                   type="text"
                   id="title" 
                   name="title" 
@@ -23,211 +23,176 @@
         <div class="col-md-2 col-sm-4">
           <div class="media">
             <div class="media-body" style="padding-top:4%;">
-               <!-- Write either editing or posting --> as <span class="text-bold">{{ getUser()?.name }}</span> 
+               <!-- Write either editing or posting -->  <span class="text-bold">{{ getUser()?.name }}</span> 
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-8">
+        <div class="col-md-3 col-sm-8 d-flex justify-content-end">
 
-          <button class="btn btn-primary" id="save_post_button"
-                  (click)="savePost()"> Save
-            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          <button class="btn btn-success" id="save_post_button"
+                  (click)="savePost()"><i class="fa fa-floppy-o mr-1" aria-hidden="true"></i>Save
+            
             <!-- Write either updating or save -->
           </button>
-          <!-- 
-          <a href={{ isset($postEdit) ? route('admin.blog.preview',['slug'=>$blog_post->slug]):'#' }}
-              target="_blank"
-              id="blog_preview_button"
-              class="btn btn-default pull-right"
-              {{ isset($postEdit) ? '':'disabled' }}>
-            <i class="fa fa-eye" aria-hidden="true"></i>  Preview
-          </a> -->
         </div><!--Buttons for saving and previewing posts are placed here-->
       </div>
 
-      <div class="row">
-        <div class="col-md-10 col-sm-12">
-          <!--This section holds the categories dropdown and featured section-->
-          <div class="row" style="padding-top:1%;height:130px">
-            
-            <!-- Categories dropdown -->
-            <div class="col-md-6" style="padding-left:0px;margin-left:0px;height:40%;">
-              <select id="category_id" 
-                      *ngIf="categories" 
-                      name="category" 
-                      #category 
-                      [(ngModel)]="form.category" 
-                      (change)="setPostCategory($event)"
-                      class="form-control h-100 mt-0" 
-                      required>
+      <div class="row ">
+          <div class="col-md-9 col-sm-12 mb-4">
+            <!--This section holds the categories dropdown and featured section-->
+            <div class="row mb-4">
+              
+              <!-- Categories dropdown -->
+              <div class="col-sm-12 col-md-6 d-flex justify-content-start align-items-center">
+                <select id="category_id"
+                        *ngIf="categories" 
+                        name="category" 
+                        #category 
+                        (change)="setPostCategory($event)"
+                        class="form-control my-0" 
+                        required>
 
-                <!--This sets the value for the first option to the current category of the post being edited-->
-                <option *ngFor="let category of categories" value="{{ category.name }}">
+                  <!--This sets the value for the first option to the current category of the post being edited-->
+                  <option *ngFor="let category of categories" value="{{ category.name }}">
+                    
+                          {{ category.name }}
+                        
+                  </option>
+
                   
-                        {{ category.name }}
-                      
-                </option>
+                </select>
 
-                
-              </select>
+                <select *ngIf="!categories" class="form-control h-100 mt-0">
+                    <option>No categories found</option>
+                </select>
+              </div>
 
-              <select *ngIf="!categories" class="form-control h-100 mt-0">
-                  <option>No categories found</option>
-              </select>
+              <!-- Holds the state of the featured star check icon -->
+              <input name="featured" 
+                      id="featured" 
+                      value=''
+                      [(ngModel)]="form.featured" 
+                      #featured 
+                      hidden 
+                      required/>
 
-              <br/>
-            </div>
-
-            <input name="featured" id="featured" value='' [(ngModel)]="form.featured" #featured hidden required/>
-            <div class="col-md-6 col-sm-5 col-lg-5" style="height:40%;">
-              <table class="table-bordered col-md-12 col-sm-12 col-lg-12 h-100 mt-0" style="border:1px solid #DBDBDB;height:34px;">
-                <tr>
-                  <td class="prop-table">
-                    <i class="fa fa-thumb-tack" aria-hidden="true"></i>
-                    &nbsp;&nbsp;Featured
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </td>
-                  <!-- <td class="prop-table" *ngIf="">
-                      &nbsp;&nbsp;
-                        @if(isset($blog_post))
-                          <span class="glyphicon
-                                      {{ $blog_post->featured == 1?'glyphicon-star':'glyphicon-star-empty'}}
-                                      fa-1x"
-                                onclick="togglePostFeatured()"
-                                id="postFeatured"
-                                style="margin-top:1.1%;">
-                          </span>&nbsp;&nbsp; Display post at top 
-                        @else
-                          <span class="glyphicon glyphicon-star-empty fa-1x"
-                                onclick="togglePostFeatured()"
-                                id="postFeatured"
-                                style="margin-top:1.1%;">
-                          </span>&nbsp;&nbsp;  Display post at top
-                        @endif
-                  </td> -->
-                  <td>
+              <!-- Holds the featured div -->
+              <div class="col-sm-12 col-md-6 featured-tab d-flex justify-content-start align-items-center">
+                <div class="row h-100">
+                  <div class="col-md-4 col-sm-12 d-flex justify-content-start align-items-center">
+                        <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>Featured
+                  </div>
+                  <div class="col-md-8 col-sm-12 d-flex justify-content-start align-items-center featured-check">
                       <i class="fa fa-star-o fa-1x"
                             (click)="togglePostFeatured($event)"
-                            id="postFeatured"
-                            style="margin-top:1.1%;">
+                            id="postFeatured">
                     </i>&nbsp;&nbsp;  Display post at top
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <!-- Description and status field -->
-          <div class="row">
-
-            <!-- Description field -->
-            <div class="col-md-6">
-              <textarea placeholder="Description"
-                        style="text-indent:1px;"
-                        class="form-control h-100 mt-0"
-                        name="description"
-                        #description
-                        [(ngModel)]="form.description"
-                        id="description" required>
-              </textarea>
-            </div>
-
-            <!-- Status field -->
-            <div class="col-md-6">
-                <table class="table-bordered col-md-12 col-sm-12 col-lg-12 h-100 mt-0" 
-                        style="border:1px solid #DBDBDB;height:80px;margin-top:4.9%;">
-                  <tr>
-                    <td class="prop-table" style="padding-top: 0%;">
-                      <i class="fa fa-bookmark" aria-hidden="true"></i>
-                      &nbsp;&nbsp;Status
-                      &nbsp;&nbsp;
-                    </td>
-                    <td class="prop-table radio-post-status">
-                        <!-- @if(isset($blog_post))
-                          &nbsp;&nbsp;
-                          
-                            <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                                value="draft" {{ $blog_post->status == 'draft' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Draft
-                        
-                                <br/>
-                          &nbsp;&nbsp;
-                          
-                          <input type="radio" name="status" class="post-status" style="margin-top: 0px !important; vertical-align: -1px;"
-                                value="publish" {{ $blog_post->status == 'publish' ? 'checked="checked"' : '' }}>&nbsp;&nbsp; Publish
-                        
-                        @else -->
-                          &nbsp;&nbsp;
-                          
-                          <input type="radio" 
-                                name="status" 
-                                [(ngModel)]="form.status" 
-                                #status 
-                                class="form-control" 
-                                style="margin-top: 0px !important; vertical-align: -1px;"
-                                value="draft" 
-                                checked="checked">&nbsp;&nbsp; Draft
-                                <br/>
-                          &nbsp;&nbsp;
-                          
-                          <input type="radio" 
-                                name="status" 
-                                [(ngModel)]="form.status" 
-                                class="form-control" 
-                                style="margin-top: 0px !important; vertical-align: -1px;"
-                                value="publish">&nbsp;&nbsp; Publish
-                        <!-- @endif -->
-                    </td>
-                  </tr>
-                </table>
-            </div>
-
-             <!--This section holds the editor-->
-             <div class="col-md-8 offset-md-1 col-sm-12" style="padding-top:2%;">
-              <angular-tinymce [(ngModel)]='form.content'></angular-tinymce>
-            </div>
-          </div>
-
-        </div>
-
-        <!--Sidebar is placed here with some tweaking functionalities for the admin-->
-        <div class="sidebar col-md-2 col-sm-12 pull-right">
-          <aside class="col-md-2">
-
-            <div style="border-bottom:1px solid #DBDBDB;">
-
-              <h3><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Tags</h3>
-            </div>
-            <div>
-
-                <div *ngFor="let tag of tags">
-                  
-                  <input type = "checkbox"
-                          name ="{{ tag.name }}"
-                          (change) = "toggleTag(tag)"
-                          style="margin-top: 0px !important; vertical-align: -1px"/> 
-                          {{ tag.name }}
-                  
-                </div>
-
-                <div *ngIf="!tags?.length > 0" class="panel panel-default">
-                  <div class="panel-body">
-                    *No tags available.
                   </div>
-                </div>
-
+                  
+                  </div>
+              </div>
             </div>
 
-          </aside>
+            <!-- Description and status field -->
+            <div class="row">
 
-          <!--This sets the content of the blog post to edit in an hidden div and waits until the editor is loaded-->
-          <div style="display:none;" id="editPostContent">
-            <!-- @if(isset($blog_post))
-              {!! $blog_post->content !!}
-            @endif -->
+              <!-- Description field -->
+              <div class="col-sm-12 col-md-6 d-flex justify-content-start align-items-center">
+                <textarea placeholder="Description"
+                          style="text-indent:1px;"
+                          class="form-control my-0 h-100"
+                          rows="3"
+                          name="description"
+                          #description
+                          [(ngModel)]="form.description"
+                          id="description" required>
+                </textarea>
+              </div>
+  
+              <!-- Status field -->
+              <div class="col-sm-12 col-md-6 status-tab d-flex justify-content-start align-items-center">
+                  <div class="row w-100 h-100 align-items-center">
+                    
+                    <!-- Status title  -->
+                    <div class="col-md-4 col-sm-12 d-flex justify-content-start align-items-center">
+                        <i class="fa fa-bookmark mr-3" aria-hidden="true"></i>Status
+                    </div>
+
+                    <!-- Status options -->
+                    <div class="col-md-8 col-sm-12 status-select h-100 d-flex justify-content-start align-items-center">
+                          <div class="row justify-content-start d-block" style="flex-wrap: nowrap;">
+                            <div class="col-md-12 col-sm-12 d-flex align-items-center mb-3">
+                              <input type="radio" 
+                                    name="status" 
+                                    [(ngModel)]="form.status" 
+                                    #status 
+                                    class="form-control status-options mb-0"
+                                    value="draft" 
+                                    checked="checked" /> <span>Draft</span>
+                            </div>
+                            <div class="col-md-12 col-sm-12 d-flex align-items-center">
+                                <input type="radio" 
+                                name="status" 
+                                [(ngModel)]="form.status" 
+                                class="form-control status-options mb-0"
+                                value="publish" /> <span>Publish</span>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
+              </div>
+  
+               <!--This section holds the editor-->
+               <div class="col-12 pr-0" style="padding-top:2%; padding-left: 15px;">
+                
+                <angular-tinymce 
+                    [(ngModel)]='form.content'
+                    [settings]='tinymceConfig'>
+                </angular-tinymce>
+
+              </div>
+            </div>
           </div>
-          <!-- <div id="editPostId" style="display:none;">{{ isset($blog_post) ? $blog_post->id:'' }}</div> -->
-        </div>
+
+          <!--Sidebar is placed here with some tweaking functionalities for the admin-->
+        <div class="col-md-3 col-sm-12 mx-0">
+            <aside class="sidebar">
+  
+              <div style="border-bottom:1px solid #DBDBDB;" class="py-1">
+  
+                <h3 class="d-flex justify-content-center"><i class="fa fa-tags mr-2" aria-hidden="true"></i>Tags</h3>
+              </div>
+                  <div class="row ml-1">
+                    <div class="col-12 d-flex py-1" *ngFor="let tag of tags">
+                      <input type = "checkbox"
+                              name ="{{ tag.name }}"
+                              (change) = "toggleTag(tag)"
+                              class="mr-2"
+                              style="margin-top: 0px !important; vertical-align: -1px"/> 
+                              {{ tag.name }}
+                    </div>
+
+                    <div *ngIf="!tags?.length > 0" class="col-12">
+                          *No tags available.
+                      </div>
+                  </div>
+  
+                  
+  
+  
+            </aside>
+  
+            <!--This sets the content of the blog post to edit in an hidden div and waits until the editor is loaded-->
+            <div style="display:none;" id="editPostContent">
+              <!-- @if(isset($blog_post))
+                {!! $blog_post->content !!}
+              @endif -->
+            </div>
+            <!-- <div id="editPostId" style="display:none;">{{ isset($blog_post) ? $blog_post->id:'' }}</div> -->
+          </div>
+      </div>
+
+        
       </div>
 
 </div><!--Container is closed-->

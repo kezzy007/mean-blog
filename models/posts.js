@@ -48,3 +48,9 @@ const PostsSchema = mongoose.Schema({
 PostsSchema.plugin(mongooseTimestamps);
 
 const Posts = module.exports = mongoose.model('Posts', PostsSchema);
+
+module.exports.getAllPublishedPosts = () => {
+
+    return Posts.find({status: {$ne: 'draft'} });
+
+};

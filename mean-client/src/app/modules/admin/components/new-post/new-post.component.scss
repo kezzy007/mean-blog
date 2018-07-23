@@ -1,3 +1,20 @@
+@import '../../../../sass-files/variables';
+
 :host{
     width: 100%;
+}
+
+.featured-check, .status-select{
+    border-left: 1px solid $siteBorderColor;
+}
+
+.status-options{ 
+    margin-top: 0px !important; 
+    vertical-align: -1px; 
+    width:auto;
+    margin-right: 0.5rem;
+}
+
+.ml-15{
+    margin-left: 15px;
 }

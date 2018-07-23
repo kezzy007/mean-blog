@@ -24,4 +24,11 @@ export class CategoriesService {
     return this.http.post<any> (this.host + '/add-category', {category: category})
                 .map(response => response);
   }
+
+  updateCategory(category): Observable<any> {
+
+    return this.http.post<any> (this.host + '/update-category', {category: category})
+                .map(response => response);
+  }
+
 }

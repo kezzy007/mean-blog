@@ -35,6 +35,7 @@
     "nodemailer": "^4.6.4",
     "passport": "*",
     "passport-jwt": "^3.0.1",
+    "socket.io": "^2.1.0",
     "uid-generator": "^1.0.0"
   }
 }

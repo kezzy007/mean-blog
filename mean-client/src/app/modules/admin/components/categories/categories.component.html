@@ -1,24 +1,15 @@
 
 <!--This is the view holding the categories details-->
 <!--This section holds the sidebar with admin functions and displays the categories in a table-->
-<div class="row w-100">
+<div class="row w-100 ml-0">
 
   <div class="col-md-12">
-    <br/>
-      <div class="row">
+    
+      <div class="row ml-0">
           <form class="form-inline" (ngSubmit)="addNewCategory()">
-
-
-              
-                <div class="form-group">
-                  <!-- <div class="alert {{ session()->get('status')=='success'?'alert-success':'alert-danger'}}">
-                    {{ session()->get('status')=='success' ?
-                    'Tag added':'Operation Failed'}}
-                  </div> -->
-                </div>
               
               <div class="form-group">
-                  <div class="col-md-6">
+                  <div class="col-md-5 pl-0">
                       <input type="text"
                               class="form-control"
                               name="name" 
@@ -32,7 +23,7 @@
               </div>
 
               <div class="form-group">
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                       <input type="text" 
                               class="form-control"
                               name="slug" 
@@ -54,25 +45,39 @@
           </form>
       </div>
 
-      <table class="table table-hover">
+      <table class="table table-hover ml-15">
         <thead>
           <tr>
-            <th>Category Title</th>
+            <th class="text-bold">Category Title</th>
             <th>Category slug</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-        
+        <tbody *ngIf="categories?.length">
 
-          <tr *ngFor="let category of categories; trackBy: categoryListTracker">
-              <td>{{ category.name }}</td>
-              <td>{{ category.slug }}</td>
-              <td>
-                <button class="btn btn-primary"
-                        (click)="editCategory(category)">
+          <tr *ngFor="let category of categories; index as i; trackBy: categoryListTracker">
+            <td class="editRow{{ i }} main">{{ category.name }}</td>
+            <td class="editRow{{ i }} main">{{ category.slug }}</td>
+            <td class="editRow{{ i }} temp d-none">
+              <input class='form-control' name='categoryName{{ i }}' 
+                      [(ngModel)]='editingCategory.name'/>
+            </td>
+            <td class="editRow{{ i }} temp d-none">
+              <input class='form-control' name='categorySlug{{ i }}' 
+                      [(ngModel)]='editingCategory.slug'/>
+            </td>
+            <td class="editRow{{ i }} main">
+              <button class="btn btn-primary"
+                      (click)="editCategory(category, i)">
+                <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                  &nbsp;&nbsp;Edit
+              </button>
+            </td>
+            <td class="editRow{{ i }} temp d-none">
+                <button class="btn btn-info"
+                        (click)="updateCategory()">
                   <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                    &nbsp;&nbsp;Edit
+                    &nbsp;&nbsp;Update
                 </button>
               </td>
           </tr>

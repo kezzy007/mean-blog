@@ -20,6 +20,11 @@ export class NewPostComponent implements OnInit {
     content: ''
   };
   
+  tinymceConfig = {
+    max_width: '1000',
+    min_height: '200'
+  };
+
   tags;
   categories;
 
@@ -108,9 +113,9 @@ export class NewPostComponent implements OnInit {
 
   setPostCategory($event){
 
-    console.log("Setting category");
+    // console.log("Setting category", $event.target.value.toLowerCase(), this.categories);
 
-    if(this.categories == null) return;
+    if(this.categories === null) return;
 
    for(var i = 0; i < this.categories.length; i++){
 

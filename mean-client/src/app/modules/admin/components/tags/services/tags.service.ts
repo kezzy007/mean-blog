@@ -23,4 +23,11 @@ export class TagsService {
 
     return this.http.post<any> (this.host + '/add-tag', {tag: tag}).map(response => response);
   }
+
+  updateTag(tag): Observable<any> {
+
+    return this.http.post<any> (this.host + '/update-tag', {tag: tag}).map(res => res);
+
+  }
+
 }

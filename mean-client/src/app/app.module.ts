@@ -12,9 +12,10 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { LoginService } from './components/login/services/login-service.service';
-
+import { HomeService } from './components/home/services/home.service';
 
 import
   {
@@ -25,9 +26,10 @@ import
   } 
 from 'angular5-social-login';
 
+
 const routes: Routes =  [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent}
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent}
 ];
 
 // Configs 
@@ -51,7 +53,8 @@ export function getAuthServiceConfigs() {
   declarations: [
     AppComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ export function getAuthServiceConfigs() {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
     },
-    LoginService
+    LoginService,
+    HomeService
   ],
   bootstrap: [AppComponent]
 })

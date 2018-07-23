@@ -7,18 +7,9 @@
       <br/>
         <div class="row">
             <form class="form-inline" (ngSubmit)="addNewTag()">
-
-  
-                
-                  <div class="form-group">
-                    <!-- <div class="alert {{ session()->get('status')=='success'?'alert-success':'alert-danger'}}">
-                      {{ session()->get('status')=='success' ?
-                      'Tag added':'Operation Failed'}}
-                    </div> -->
-                  </div>
                 
                 <div class="form-group">
-                    <div class="col-md-6">
+                    <div class="col-md-5 ml-15">
                         <input id="tag_name" 
                                 type="text"
                                 class="form-control"
@@ -27,13 +18,14 @@
                                 #name
                                 [(ngModel)]="tag.name"
                                 placeholder="Tag title"
-                                required autofocus>
+                                required 
+                                autofocus>
   
                     </div>
                 </div>
   
                 <div class="form-group">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <input id="tag_slug" 
                                 type="text" 
                                 class="form-control"
@@ -56,7 +48,7 @@
             </form>
         </div>
   
-        <table class="table table-hover">
+        <table class="table table-hover" style="margin-left: 15px;">
           <thead>
             <tr>
               <th>Tag Title</th>
@@ -64,19 +56,34 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="tags?.length > 0">
           
   
-            <tr *ngFor="let tag of tags; trackBy: tagListTracker">
-                <td>{{ tag.name }}</td>
-                <td>{{ tag.slug }}</td>
-                <td>
+            <tr *ngFor="let tag of tags; index as i; trackBy: tagListTracker">
+                <td class="editRow{{ i }} main">{{ tag.name }}</td>
+                <td class="editRow{{ i }} main">{{ tag.slug }}</td>
+                <td class="editRow{{ i }} temp d-none">
+                  <input class='form-control' name='tagName{{ i }}' 
+                          [(ngModel)]='editingTag.name'/>
+                </td>
+                <td class="editRow{{ i }} temp d-none">
+                  <input class='form-control' name='tagSlug{{ i }}' 
+                          [(ngModel)]='editingTag.slug'/>
+                </td>
+                <td class="editRow{{ i }} main">
                   <button class="btn btn-primary"
-                          (click)="editTag(tag)">
+                          (click)="editTag(tag, i)">
                     <i class="fa fa-pencil-square" aria-hidden="true"></i>
                       &nbsp;&nbsp;Edit
                   </button>
                 </td>
+                <td class="editRow{{ i }} temp d-none">
+                    <button class="btn btn-info"
+                            (click)="updateTag()">
+                      <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        &nbsp;&nbsp;Update
+                    </button>
+                  </td>
             </tr>
   
   

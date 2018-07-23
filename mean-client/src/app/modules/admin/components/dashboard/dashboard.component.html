@@ -1,9 +1,9 @@
 <div class="row mx-0">
-  <div class="col-md-4 col-lg-4">
-    <a class="text-bold ml-3" style="font-weight:bolder;"><i class="fa fa-eye" aria-hidden="true"></i>
-      &nbsp; View Blogs</a>
+  <div class="col-md-2 col-lg-2 ml-4 d-flex align-items-center">
+    <span class="text-bold ml-3" style="font-weight:bolder;"><i class="fa fa-eye" aria-hidden="true"></i>
+      &nbsp; View Blogs</span>
   </div>
-  <div class="offset-md-2 col-md-4 col-lg-4">
+  <div class="col-md-4 col-lg-4 pl-0">
     <a [routerLink]="['new-post']">
       <button class="btn btn-primary text-center">
         <i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp; New Post
@@ -12,39 +12,33 @@
   </div>
 </div>
 
-<div class="row mx-0">
-<div class="sidebar col-md-3 pull-left">
-  <aside style="height:80%;position:fixed;overflow:scroll;overflow-x:hidden;">
+<div class="row mx-0 h-100">
+<div class="sidebar col-md-2 px-0">
+  <aside>
     <ul>
       <li class="" style="list-style-type:none;">
 
-        <a [routerLink]="['posts']" class="dropdown-toggle text-bold"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false" style="font-size:16px;">
+        <a [routerLink]="['posts']" 
+           class=" text-bold"
+           style="font-size:16px;">
             <i class="fa fa-clipboard" aria-hidden="true"></i>
             Posts
         </a>
       </li>
       <li class="" style="list-style-type:none;">
 
-        <a [routerLink]="['tags']" class="dropdown-toggle text-bold"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false" style="font-size:16px;">
+        <a [routerLink]="['tags']" 
+           class=" text-bold"
+            style="font-size:16px;">
             <i class="fa fa-clipboard" aria-hidden="true"></i>
             Tags
         </a>
       </li>
       <li class="" style="list-style-type:none;">
 
-        <a [routerLink]="['categories']" class="dropdown-toggle text-bold"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false" style="font-size:16px;">
+        <a [routerLink]="['categories']" 
+           class=" text-bold"
+            style="font-size:16px;">
             <i class="fa fa-clipboard" aria-hidden="true"></i>
             Categories
         </a>
@@ -55,9 +49,10 @@
 </div>
 
 <!-- A list of all the posts are specified here -->
-<div class="col-md-9">
-
+<div class="col-md-9 admin-routes-outlet">
+  <!-- <div style="position:absolute;"> -->
     <router-outlet></router-outlet>
-
+  <!-- </div> -->
 </div>
+
 </div>
