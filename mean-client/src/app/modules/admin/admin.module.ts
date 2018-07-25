@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes, Router} from '@angular/router';
 import { FormsModule, ReactiveFormsModule, CheckboxControlValueAccessor } from '@angular/forms';
 import { TinyMceModule, tinymceDefaultSettings } from 'angular-tinymce';
-
+import { SharedModule } from '../../shared.module'
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PostsComponent } from './components/posts/posts.component';
@@ -11,10 +11,12 @@ import { TagsComponent } from './components/tags/tags.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { NewPostComponent } from './components/new-post/new-post.component';
 
+
 // Providers 
 import { TagsService } from './components/tags/services/tags.service';
 import { CategoriesService } from './components/categories/services/categories.service';
 import { NewPostService } from './components/new-post/services/new-post.service';
+import { PostService } from './components/posts/services/post.service';
 
 
 const routes: Routes = [
@@ -37,6 +39,10 @@ const routes: Routes = [
       {
         path: 'tags',
         component: TagsComponent
+      },
+      {
+        path: 'posts',
+        component: PostsComponent
       }
     ]
   },
@@ -48,7 +54,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     TinyMceModule.forRoot(tinymceDefaultSettings()),
     FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   exports: [ RouterModule, FormsModule, DashboardComponent ],
   declarations: [ 
@@ -58,6 +65,6 @@ const routes: Routes = [
                   CategoriesComponent,
                   NewPostComponent
                 ],
-  providers: [TagsService, CategoriesService, NewPostService]
+  providers: [TagsService, CategoriesService, NewPostService, PostService]
 })
 export class AdminModule { }

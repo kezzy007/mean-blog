@@ -17,8 +17,7 @@
                   #title
                   [(ngModel)]="form.title" 
                   placeholder="Post title" 
-                  required
-                  value="">
+                  required/>
         </div>
         <div class="col-md-2 col-sm-4">
           <div class="media">
@@ -62,15 +61,13 @@
                   
                 </select>
 
-                <select *ngIf="!categories" class="form-control h-100 mt-0">
+                <select *ngIf="!categories" class="form-control my-0">
                     <option>No categories found</option>
                 </select>
               </div>
 
               <!-- Holds the state of the featured star check icon -->
-              <input name="featured" 
-                      id="featured" 
-                      value=''
+              <input id="featured" 
                       [(ngModel)]="form.featured" 
                       #featured 
                       hidden 
@@ -83,10 +80,14 @@
                         <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>Featured
                   </div>
                   <div class="col-md-8 col-sm-12 d-flex justify-content-start align-items-center featured-check">
-                      <i class="fa fa-star-o fa-1x"
-                            (click)="togglePostFeatured($event)"
-                            id="postFeatured">
-                    </i>&nbsp;&nbsp;  Display post at top
+                      <i [ngClass]="{ 
+                                    'fa fa-1x': true,
+                                    'fa-star-o': !form.featured,
+                                    'fa-star': form.featured
+                                  }" 
+                          (click)="togglePostFeatured()"
+                          id="postFeatured">
+                      </i>&nbsp;&nbsp;  Display post at top
                   </div>
                   
                   </div>
@@ -105,7 +106,8 @@
                           name="description"
                           #description
                           [(ngModel)]="form.description"
-                          id="description" required>
+                          id="description"
+                          required>
                 </textarea>
               </div>
   
@@ -162,23 +164,22 @@
   
                 <h3 class="d-flex justify-content-center"><i class="fa fa-tags mr-2" aria-hidden="true"></i>Tags</h3>
               </div>
-                  <div class="row ml-1">
-                    <div class="col-12 d-flex py-1" *ngFor="let tag of tags">
-                      <input type = "checkbox"
-                              name ="{{ tag.name }}"
-                              (change) = "toggleTag(tag)"
-                              class="mr-2"
-                              style="margin-top: 0px !important; vertical-align: -1px"/> 
-                              {{ tag.name }}
-                    </div>
 
-                    <div *ngIf="!tags?.length > 0" class="col-12">
-                          *No tags available.
-                      </div>
-                  </div>
-  
-                  
-  
+              <div class="row ml-1" *ngIf="tags?.length > 0">
+                <div class="col-12 d-flex py-1" *ngFor="let tag of tags">
+                  <input type = "checkbox"
+                          name ="{{ tag.name }}"
+                          (change) = "toggleTag(tag)" 
+                          checked = "{{ checkIfTagExists(tag) }}"
+                          class="mr-2"
+                          style="margin-top: 0px !important; vertical-align: -1px"/> 
+                          {{ tag.name }}
+                </div>
+              </div>
+
+              <div *ngIf="!tags?.length > 0"  class="row">
+                *No tags available.
+              </div>
   
             </aside>
   

@@ -56,24 +56,24 @@
         <tbody *ngIf="categories?.length">
 
           <tr *ngFor="let category of categories; index as i; trackBy: categoryListTracker">
-            <td class="editRow{{ i }} main">{{ category.name }}</td>
-            <td class="editRow{{ i }} main">{{ category.slug }}</td>
-            <td class="editRow{{ i }} temp d-none">
+            <td class="editRow{{ i }} main align-middle">{{ category.name }}</td>
+            <td class="editRow{{ i }} main align-middle">{{ category.slug }}</td>
+            <td class="editRow{{ i }} temp d-none align-middle">
               <input class='form-control' name='categoryName{{ i }}' 
                       [(ngModel)]='editingCategory.name'/>
             </td>
-            <td class="editRow{{ i }} temp d-none">
+            <td class="editRow{{ i }} temp d-none align-middle">
               <input class='form-control' name='categorySlug{{ i }}' 
                       [(ngModel)]='editingCategory.slug'/>
             </td>
-            <td class="editRow{{ i }} main">
+            <td class="editRow{{ i }} main align-middle">
               <button class="btn btn-primary"
                       (click)="editCategory(category, i)">
                 <i class="fa fa-pencil-square" aria-hidden="true"></i>
                   &nbsp;&nbsp;Edit
               </button>
             </td>
-            <td class="editRow{{ i }} temp d-none">
+            <td class="editRow{{ i }} temp d-none align-middle">
                 <button class="btn btn-info"
                         (click)="updateCategory()">
                   <i class="fa fa-pencil-square" aria-hidden="true"></i>

@@ -1,3 +1,41 @@
-<p>
-  posts works!
-</p>
+<div class="row mx-0 my-3" *ngIf="!isPostEdit">
+  <div class="col-12 justify-content-start">
+    <h3> <i class="fa fa-book" aria-hidden="true"></i> Posts </h3>
+  </div>
+
+  <div class="col-12">
+
+      <table class="table-striped w-100">
+        <thead>
+          <th>S/No</th>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th colspan="2">Actions</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let post of posts; index as i; trackBy:postsTrackByFunction">
+            <td class="align-middle"> {{ i + 1 }} </td>
+            <td class="align-middle"> {{ post.title }} </td>
+            <td class="align-middle"> {{ post.createdAt.split('T')[0] }} </td>
+            <td class="align-middle"> {{ post.status }} </td>
+            <td class="align-middle">
+                  <button class="btn btn-info" (click)="editPost(post)">
+                    <i class="fa fa-edit" aria-hidden="true"></i>  Edit
+                  </button>
+
+                  <button class="btn btn-danger" (click)="deletePost(post._id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>  Delete
+                  </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+  </div>
+</div>
+
+<app-new-post 
+  *ngIf="isPostEdit"
+  [postToEdit]="postToEdit">
+</app-new-post>

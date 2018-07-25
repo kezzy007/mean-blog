@@ -36,4 +36,6 @@ import { LoadingIconComponent } from './components/loading-icon/loading-icon.com
 
 })
 
-export class SharedModule {}
+export class SharedModule {
+
+}

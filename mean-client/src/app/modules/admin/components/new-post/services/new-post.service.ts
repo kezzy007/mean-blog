@@ -21,9 +21,9 @@ export class NewPostService {
 
   }
 
-  savePost(formObject): Observable<any> {
+  savePost(formObject, postEditId = ''): Observable<any> {
 
-    return this.http.post(this.host + '/admin/save-post', {formObject: formObject})
+    return this.http.post(this.host + '/admin/save-post', {formObject: formObject, postEditId: postEditId})
                 .map(response => response);
 
   }

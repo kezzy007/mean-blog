@@ -23,8 +23,6 @@
         "../node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
         "../node_modules/angular-bootstrap-md/scss/mdb-free.scss",
         "../node_modules/angular5-toaster/src/toaster.scss",
-        "../node_modules/tinymce/skins/lightgray/skin.min.css",
-        "../node_modules/tinymce/skins/lightgray/content.min.css",
         "./styles.scss"
       ],
       "scripts": [

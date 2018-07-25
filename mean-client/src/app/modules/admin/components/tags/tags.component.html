@@ -60,30 +60,30 @@
           
   
             <tr *ngFor="let tag of tags; index as i; trackBy: tagListTracker">
-                <td class="editRow{{ i }} main">{{ tag.name }}</td>
-                <td class="editRow{{ i }} main">{{ tag.slug }}</td>
-                <td class="editRow{{ i }} temp d-none">
+                <td class="editRow{{ i }} main align-middle">{{ tag.name }}</td>
+                <td class="editRow{{ i }} main align-middle">{{ tag.slug }}</td>
+                <td class="editRow{{ i }} temp d-none align-middle">
                   <input class='form-control' name='tagName{{ i }}' 
                           [(ngModel)]='editingTag.name'/>
                 </td>
-                <td class="editRow{{ i }} temp d-none">
+                <td class="editRow{{ i }} temp d-none align-middle">
                   <input class='form-control' name='tagSlug{{ i }}' 
                           [(ngModel)]='editingTag.slug'/>
                 </td>
-                <td class="editRow{{ i }} main">
+                <td class="editRow{{ i }} main align-middle">
                   <button class="btn btn-primary"
                           (click)="editTag(tag, i)">
                     <i class="fa fa-pencil-square" aria-hidden="true"></i>
                       &nbsp;&nbsp;Edit
                   </button>
                 </td>
-                <td class="editRow{{ i }} temp d-none">
-                    <button class="btn btn-info"
-                            (click)="updateTag()">
-                      <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                        &nbsp;&nbsp;Update
-                    </button>
-                  </td>
+                <td class="editRow{{ i }} temp d-none align-middle">
+                  <button class="btn btn-info"
+                          (click)="updateTag()">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                      &nbsp;&nbsp;Update
+                  </button>
+                </td>
             </tr>
   
   

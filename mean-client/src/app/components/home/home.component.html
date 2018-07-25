@@ -81,8 +81,7 @@
 
           <!-- Post Content -->
           <div class="card">
-            <div class="card-body">
-              {{ blogPost.content }}
+            <div class="card-body" [innerHTML] = "blogPost.content">
             </div>
           </div>
 

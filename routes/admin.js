@@ -5,6 +5,28 @@ const categoriesModel = require('./../models/categories');
 const postsModel = require('./../models/posts');
 
 
+router.post('/posts', async (req, res) => {
+
+    const posts = await postsModel.find().catch( err => console.log(err) )
+
+    return res.json({success: true, posts: posts})
+
+})
+
+router.post('/delete-post', async (req, res) => {
+
+    const postId = req.body.postId
+
+    const result = await postsModel.deleteOne({_id: postId})
+                    .catch( err => {
+                        console.log(err)   
+                        throw err.message
+                    })
+                  
+    //console.log(result)                
+    return res.json({success: (result.n && result.ok) })                
+})
+
 router.post('/tags', (req, res) => {
 
     tagsModel.getAllTags().then((tags) => {
@@ -115,11 +137,20 @@ router.post('/update-category', (req, res) => {
 
 router.post('/save-post', (req,res) => {
 
-    const postSavePromise = new postsModel(req.body.formObject).save();
+    const { postEditId, formObject } = req.body
+
+    const postSavePromise = 
+            postEditId === '' ? 
+                new postsModel(formObject).save():
+                postsModel.updateOne({_id: postEditId}, {$set:{...formObject}});
 
     postSavePromise.then( result => {
 
-        return res.json({ success: true, postData: result });
+        return res.json({ 
+                    success: true, 
+                    postData: result, 
+                    updateStatus: (result.nModified > 0)
+                 });
 
     })
     .catch(err => {
