@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { ToasterConfig } from 'angular5-toaster'
 
 @Component({
@@ -17,9 +18,26 @@ export class DashboardComponent implements OnInit {
       timeout: 0
   });
 
-  constructor() { }
+  authenticated = false;
+
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
+
+    this.authenticateUser();
+
+  }
+
+  authenticateUser() {
+
+    if(!this.authenticated){
+
+      this.router.navigateByUrl('/admin/login')
+
+    }
+
   }
 
 }

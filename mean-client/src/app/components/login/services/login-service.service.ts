@@ -10,13 +10,14 @@ import { User } from '../classes/user';
 export class LoginService {
 
   host = 'http://localhost:3200';
+
   @Output() userLoggedIn = new EventEmitter<any>();
 
   constructor(private http: HttpClient) { }
 
   login(user): Observable<User> {
 
-    return this.http.post<User>(this.host + '/users/authenticate', user)
+    return this.http.post<User>(`${this.host}/users/authenticate`, user)
                 .map((response) => {
 
                   if (response.success) {
@@ -34,7 +35,7 @@ export class LoginService {
 
     const user = JSON.parse(localStorage.getItem('user')) || '';
 
-    return this.http.post<User>(this.host + '/users/logout', {user: user})
+    return this.http.post<User>(`${this.host}/users/logout`, {user: user})
                 .map((response) => {
 
                   if (response.success) {
@@ -67,6 +68,13 @@ export class LoginService {
 
                   return response;
                 });
+
+  }
+
+  signupOrLoginUser(userData = null): Observable<any> {
+
+    return this.http.post(`${this.host}/admin/login/google`, { userData: userData })
+                .map(response => response)
 
   }
 

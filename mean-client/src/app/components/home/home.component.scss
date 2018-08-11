@@ -1,3 +1,9 @@
+@import '../../sass-files/variables';
+
 .show{
     display: initial !important;
+}
+
+.site-text-color{
+    color: $siteColor
 }

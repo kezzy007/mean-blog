@@ -16,7 +16,10 @@ export class HomeComponent implements OnInit {
   blogCategories = [];
   blogPostsComments = [];
   newPostComment; 
-  isCommenting = false;
+  isCommenting = {
+    newComment: false,
+    postId: null
+  };
 
   socket = io(environment.host);
 
@@ -52,26 +55,52 @@ export class HomeComponent implements OnInit {
 
   }
 
+  getBlogPostComments(postId) {
+    return this.blogPostsComments.filter( 
+      comment => comment.post_id === postId
+    )
+  }
 
   /**
    *  Submits comment to the server
    */
    submitComment(postId) {
 
-      this.isCommenting = true;
+      this.initIsCommenting(postId)
 
       const comment = this.prepareCommentObjectForPost(postId);
 
       this.homeService.submitComment(comment)
           .subscribe(response => {
 
-            this.isCommenting = false;
+            this.unInitIsCommenting()
             
             this.blogPostsComments.push(response.comment);
 
           });
 
    }
+
+  /**
+   * Initializes isCommenting object used to prevent notification
+   * of "someone is commenting" on post
+   * 
+   * @param postId 
+   */
+  initIsCommenting(postId) {
+
+    this.isCommenting = {
+      newComment: postId !== null ? true : false ,
+      postId: postId
+    };
+
+  }
+
+  unInitIsCommenting() {
+
+    this.initIsCommenting(null)
+    
+  }
 
   /**
   *   Prepares the comment object for the post
@@ -83,6 +112,23 @@ export class HomeComponent implements OnInit {
         comment: this.newPostComment,
         user: this.getUser()
       };
+
+   }
+
+   /**
+    *   Displays the full post when read more button is clicked for a post
+    */
+   displayFullPost($event, postContainer, postContent) {
+
+    postContainer.innerHTML = postContent
+
+    const element = $event.target
+    
+    console.log(element)
+
+    element.tagName.toUpperCase() === "BUTTON" ? 
+      element.style.display = "none" :
+      element.parentNode.style.display = "none" 
 
    }
 
@@ -101,9 +147,20 @@ export class HomeComponent implements OnInit {
    * @param postId 
    */
 
-  socketBroadcastUserCommenting(postId) {
+  broadcastUserCommenting(postId) {
 
+    //console.log('commenting')
     this.socket.emit('commenting', postId);
+
+  }
+
+  /**
+   * Removes the notification for user commenting
+   * 
+   */
+  removeUserCommentingBroadcast(postId) {
+
+    this.socket.emit('commentDone', postId);
 
   }
 
@@ -112,13 +169,13 @@ export class HomeComponent implements OnInit {
    *  Used to register all client side socket listeners
    *  to listen for emitted events from the server
    */
-
   registerSocketListeners() {
 
     const thisComponent = this;
 
     this.socket.on('commenting', (post_id) => {
 
+      //console.log('commenting')
       if(thisComponent.postExistsInDom(post_id)) {
 
         thisComponent.displayCommentingOnCommentList(post_id);
@@ -127,24 +184,36 @@ export class HomeComponent implements OnInit {
 
     });
 
-    this.socket.on('user-commented', (comment) => {
+    this.socket.on('user-commented', (result) => {
 
-      if(thisComponent.isCommenting){ 
+      if(thisComponent.isCommenting.newComment){ 
 
-        thisComponent.isCommenting = !thisComponent.isCommenting;  
+        thisComponent.isCommenting.newComment = 
+          !thisComponent.isCommenting.newComment;  
+
+        thisComponent.clearCommentingDiv()
 
         return;
 
       }
 
-      thisComponent.getCurrentCommentingNotificationElement(comment.comment.post_id)
-                    .classList.remove('show');
+      // Hide commenting notification div for other users
+      thisComponent.hideCommentingNotificationDiv(result.comment.post_id)
 
-      console.log("Foreign user commented", comment.comment);
-
-      thisComponent.addNewCommentToExistingComments(comment.comment);
+      thisComponent.addNewCommentToExistingComments(result.comment);
     });
 
+  }
+
+  clearCommentingDiv() {
+    
+    this.newPostComment = ''
+
+  }
+
+  hideCommentingNotificationDiv(postId) {
+    this.getCurrentCommentingNotificationElement(postId)
+                    .classList.remove('show');
   }
 
   itemsListTrackerFunction(index) {
@@ -167,14 +236,16 @@ export class HomeComponent implements OnInit {
 
   displayCommentingOnCommentList(postId) {
 
-    let commentNotificationElementInDom = this.getCurrentCommentingNotificationElement(postId);
-    
+    let commentingNotificationElementInDom = 
+      this.getCurrentCommentingNotificationElement(postId);
+
     // Comment not found in Dom
-    if(commentNotificationElementInDom === null) {
-      return;
+    if( (commentingNotificationElementInDom === null) || 
+        commentingNotificationElementInDom.classList.contains('show')) {
+      return;    
     }
 
-    commentNotificationElementInDom.classList.add('show');
+    commentingNotificationElementInDom.classList.add('show');
 
   }
 

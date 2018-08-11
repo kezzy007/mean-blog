@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ToasterService, ToasterModule } from 'angular5-toaster';
 
 import { LoadingIconComponent } from './components/loading-icon/loading-icon.component';
-
+import { TruncatePipe } from './pipes/truncate.pipe'
 
 
 
@@ -24,13 +24,15 @@ import { LoadingIconComponent } from './components/loading-icon/loading-icon.com
     exports: [
         MomentModule,
         LoadingIconComponent,
+        TruncatePipe,
         MDBBootstrapModule,
         FormsModule,
         ToasterModule,
         BrowserAnimationsModule
     ],
     declarations: [
-        LoadingIconComponent
+        LoadingIconComponent,
+        TruncatePipe
     ],
     providers: [ ToasterService ]
 

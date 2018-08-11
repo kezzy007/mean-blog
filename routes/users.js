@@ -41,9 +41,7 @@ router.post('/save-comment', (req, res) => {
     new commentsModel(req.body.comment).save((err, comment) => {
 
         if(err) throw err;
-
-        console.log('saved comment', comment);
-
+        
         /**
          * To access the io in the routes
          */

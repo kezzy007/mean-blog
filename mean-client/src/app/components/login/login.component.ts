@@ -15,7 +15,7 @@ import {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 
 export class LoginComponent implements OnInit {
@@ -112,30 +112,35 @@ export class LoginComponent implements OnInit {
   socialSignIn(socialPlatform : string) {
     let socialPlatformProvider;
 
-    if(socialPlatform == "facebook"){
+    if(socialPlatform == 'facebook'){
 
       socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
 
-    }else if(socialPlatform == "google"){
+    }else if(socialPlatform === 'google'){
 
       socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
 
     }
-    
-    this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => {
 
-        userData.id = undefined;
+    // this.socialAuthService.signIn(socialPlatformProvider).then(
+    //   (userData) => {
 
-        this.validateUserExists(userData);
+        //userData.id = undefined;
+
+        //this.validateUserExists(userData);
         
-        console.log(socialPlatform+" sign in data : " , userData);
-        console.log(userData);
+        // console.log(socialPlatform+" sign in data : " , userData);
+        
         // Now sign-in with userData
-        
+        let userData
+
+        this.loginService.signupOrLoginUser(userData)
+            .subscribe( response => {
+              console.log(response)
+            })
             
-      }
-    );
+    //   }
+    // );
   }
 
   validateUserExists(userData) {

@@ -17,6 +17,7 @@ import { TagsService } from './components/tags/services/tags.service';
 import { CategoriesService } from './components/categories/services/categories.service';
 import { NewPostService } from './components/new-post/services/new-post.service';
 import { PostService } from './components/posts/services/post.service';
+import { LoginComponent } from '../../components/login/login.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,10 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'admin/login',
+    component: LoginComponent
+  }
 ];
 
 @NgModule({

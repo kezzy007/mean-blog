@@ -24,6 +24,7 @@
   "dependencies": {
     "bcryptjs": "*",
     "body-parser": "*",
+    "cookie-session": "*",
     "cors": "*",
     "express": "*",
     "express-fileupload": "^0.4.0",
@@ -34,6 +35,7 @@
     "mongoose-timestamp": "^0.6.0",
     "nodemailer": "^4.6.4",
     "passport": "*",
+    "passport-google-auth": "^1.0.2",
     "passport-jwt": "^3.0.1",
     "socket.io": "^2.1.0",
     "uid-generator": "^1.0.0"

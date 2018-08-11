@@ -1,7 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const passport = require('passport');
+const passportSetup = require('./config/passport-setup');
+const cookieSession = require('cookie-session');
+
 const socketIo = require('socket.io');
 
 const dbConfig = require('./config/database');  
@@ -25,13 +29,30 @@ const server = app.listen(environment.APP_PORT, () => {
 // Socket is configured to work with this server
 var io = socketIo(server);
 
-app.use(function(req, res, next) {
-    'use strict';
-     req.io = io; next();
-});
+// set up session cookies
+// app.use(cookieSession({
+//     maxAge: 24 * 60 * 60 * 1000,
+//     keys: [keys.session.cookieKey]
+// }));
 
 // Cors configuration
 app.use(cors());
+
+
+app.use(function(req, res, next) {
+    'use strict';
+     req.io = io; 
+     
+     res.header("Access-Control-Allow-Origin", "*"); 
+
+     next();
+});
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // Body parser config
 app.use(bodyParser.json());
@@ -46,10 +67,6 @@ app.use('/admin', adminRoutes);
 app.use('/users', userRoutes);
 
 app.get('/', (req,res) => { res.send('Hello there'); });
-
-
-
-
 
 // A listener is registered on the socket for all connection
 io.on('connection', (socket) => {

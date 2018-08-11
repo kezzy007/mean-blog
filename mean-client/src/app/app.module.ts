@@ -6,7 +6,6 @@ import { SharedModule } from './shared.module';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminModule } from './modules/admin/admin.module';
-import { UserModule } from './modules/user/user.module';
 
 
 import { AppComponent } from './app.component';
@@ -64,7 +63,6 @@ export function getAuthServiceConfigs() {
     SocialLoginModule,
     SharedModule,
     AdminModule,
-    UserModule,
     RouterModule.forRoot(routes)
   ],
   providers: [

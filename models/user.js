@@ -25,7 +25,20 @@ const UserSchema = mongoose.Schema({
     'role':  {
         type: String,
         required: true
+    },
+    'googleId':{
+        type: String,
+        required: false
+    },
+    'thumbnail':{
+        type: String,
+        required: false
+    },
+    'username':{
+        type: String,
+        required: false
     }
+    
 });
 
 const User = module.exports = mongoose.model('Users', UserSchema);

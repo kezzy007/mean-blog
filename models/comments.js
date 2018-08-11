@@ -4,7 +4,8 @@ const mongooseTimestamps = require('mongoose-timestamp');
 const CommentsSchema = mongoose.Schema({
     'post_id': {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     'comment': {
         type: String,
@@ -22,6 +23,6 @@ const Comments = module.exports = mongoose.model('Comments', CommentsSchema);
 
 module.exports.getAllComments = () => {
 
-    return Comments.find({});
+    return Comments.find({}).sort({post_id: 1});
 
 }

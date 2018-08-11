@@ -3,7 +3,33 @@ const router = express.Router();
 const tagsModel = require('./../models/tags');
 const categoriesModel = require('./../models/categories');
 const postsModel = require('./../models/posts');
+const passport = require('passport');
 
+const authCheck = (req, res, next) => {
+    
+    if(!req.user){
+        res.redirect('/login');
+        return
+    }
+
+    next();
+    
+};
+
+// auth with google+
+router.post('/login/google', passport.authenticate('google', {
+    scope: ['dashboard']
+}));
+
+// callback route for google to redirect to
+// hand control to passport to use code to grab profile info
+router.get('auth/google/redirect', passport.authenticate('google'), (req, res) => {
+    
+    console.log(req.user)
+
+    //res.send(req.user);
+    //res.redirect('/dashboard');
+});
 
 router.post('/posts', async (req, res) => {
 

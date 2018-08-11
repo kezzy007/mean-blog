@@ -1,11 +1,19 @@
+@import "../../../../sass-files/variables";
+
 :host{
     width:100%;
 }
 
-div.sidebar li{
-    padding: 0.5rem 0px; 
-     
-    a{
-        text-decoration: none;
+div.sidebar {
+    
+    background: $siteColor;
+    
+    li{
+        padding: 0.5rem 0px; 
+        
+        a{
+            text-decoration: none;
+            color: white;
+        }
     }
 }

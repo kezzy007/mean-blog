@@ -54,36 +54,43 @@
       <div class="row" *ngIf="blogPosts?.length > 0">
 
         <!-- Post Content Column -->
-        <div class="col-lg-8" 
+        <div class="col-lg-7 offset-lg-1 col-sm-12 col-md-12 mb-4" 
              *ngFor="let blogPost of blogPosts; index as i;" 
              id="post{{ blogPost._id }}">
 
-          <!-- Title -->
-          <h1 class="mt-4">{{ blogPost.title }}</h1>
+        <div class="card p-3">
+          <!-- <div class="d-flex align-items-center justify-content-between"> -->
+            <!-- Title -->
+            <h1 class="mt">{{ blogPost.title }}</h1>
 
-          <!-- Author -->
-          <p class="lead">
-            by
-            <a href="#"></a>
-          </p>
+            <!-- Author -->
+            <p class="lead my-0 d-flex align-items-center justify-content-between">
+         
+              <!-- Date/Time -->
+              <span>{{ blogPost.createdAt?.split('T')[0] | amDateFormat:'LL' }}</span>
+              
+              <span 
+                  class="text-bold site-text-color">
+                  by <strong>Qasim</strong>
+              </span>
 
-          <hr>
+            </p>
+          <!-- </div> -->
 
-          <!-- Date/Time -->
-          <p>Posted on {{ blogPost.createdAt }}</p>
-
-          <hr>
-
-          <!-- Preview Image -->
-          <!-- <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""> -->
-
-          <hr>
 
           <!-- Post Content -->
-          <div class="card">
-            <div class="card-body" [innerHTML] = "blogPost.content">
+            <div class="card-body" 
+                  #postContainer 
+                  [innerHTML] = "blogPost.content | truncate">
             </div>
-          </div>
+
+          <p>
+            <button 
+                class="btn btn-warning btn-sm pull-right" 
+                (click)="displayFullPost($event, postContainer, blogPost.content)">
+                <strong>Read more</strong>
+            </button>
+          </p>
 
           <!-- Comments Form -->
           <div class="card my-4">
@@ -94,8 +101,10 @@
                 <div class="form-group">
                   
                   <textarea [(ngModel)]="newPostComment"
-                            (focus) = "socketBroadcastUserCommenting(blogPost._id)"
-                            class="form-control user-comment" 
+                            (focus) = "broadcastUserCommenting(blogPost._id)"
+                            (blur) = "removeUserCommentingBroadcast(blogPost._id)"
+                            class="form-control user-comment"
+                            id="newPostComment-{{ blogPost._id }}" 
                             name="newPostComment"
                             rows="3">
                   </textarea>
@@ -118,9 +127,10 @@
           <div class="d-flex" *ngIf="blogPostsComments?.length > 0">
             <div class="row">
               <div class="media mb-4 col-12"
-                    *ngFor="let comment of blogPostsComments;
-                                index as i; 
-                                trackBy: itemsListTrackerFunction">
+                    *ngFor="let comment of getBlogPostComments(blogPost._id);
+                            index as i; 
+                            trackBy: itemsListTrackerFunction">
+                            
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="user's image">
                 <div class="media-body">
                   <h5 class="mt-0"> {{ comment.user?.name }}</h5>
@@ -129,8 +139,8 @@
               </div>
             </div>
           </div>
-
-        </div>
+          </div>
+      </div>
 
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
