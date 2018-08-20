@@ -19,12 +19,10 @@ export class LoginService {
 
     return this.http.post<User>(`${this.host}/users/authenticate`, user)
                 .map((response) => {
-
-                  console.log(response)
                   
                   if (response.success) {
-                    // console.log('loggedIn');
-                    this.userLoggedIn.emit(true); // For navbar to display logout button
+
+                    this.userLoggedIn.emit(response); // For navbar to display logout button
 
                   }
 

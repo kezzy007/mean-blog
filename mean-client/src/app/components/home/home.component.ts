@@ -3,6 +3,8 @@ import { HomeService } from './services/home.service';
 
 import { environment } from '../../../environments/environment';
 import * as io from 'socket.io-client';
+import { RegisterService } from '../register/services/register.service';
+import { LoginService } from '../login/services/login-service.service';
 
 
 @Component({
@@ -12,6 +14,7 @@ import * as io from 'socket.io-client';
 })
 export class HomeComponent implements OnInit {
 
+  loggedIn = false;
   blogPosts;
   blogCategories = [];
   blogPostsComments = [];
@@ -24,15 +27,76 @@ export class HomeComponent implements OnInit {
   socket = io(environment.host);
 
   constructor(
-    private homeService: HomeService
+    private homeService: HomeService,
+    private registerService: RegisterService,
+    private loginService: LoginService
   ) { 
 
   }
 
   ngOnInit() {
 
-    this.getBlogPostsAndComments();
-    this.registerSocketListeners();
+    this.getBlogPostsAndComments()
+    this.registerSocketListeners()
+    this.registerListenerForSignupAndLogin()
+
+  }
+
+  /**
+   * Register a listener for new user registration and activates login
+   */
+  registerListenerForSignupAndLogin() {
+
+    const signupSubscription = 
+          this.registerService.notifyLoggedIn
+              .subscribe( ({ success, user, token }) => {
+
+                if(!success)return
+
+                this.storeTokenInLocalStorage(token)
+
+                this.storeUserInLocalStorage(user)
+
+                this.setUserLoggedIn(true)
+
+                signupSubscription.unsubscribe()
+                
+              })
+
+    const loginSubscription = 
+          this.loginService.userLoggedIn
+              .subscribe( ({ success, user, token }) => {
+
+                if(!success)return
+
+                this.storeTokenInLocalStorage(token)
+
+                this.storeUserInLocalStorage(user)
+
+                this.setUserLoggedIn(true)
+
+                loginSubscription.unsubscribe()
+                
+              })
+
+  }
+
+  setUserLoggedIn(loginState){
+
+    this.loggedIn = loginState
+
+  }
+
+
+  storeTokenInLocalStorage(token) {
+
+    window.localStorage.setItem('token', token);
+
+  }
+
+  storeUserInLocalStorage(user) {
+
+    window.localStorage.setItem('user', JSON.stringify(user));
 
   }
 
@@ -136,7 +200,7 @@ export class HomeComponent implements OnInit {
    *  Returns the user object of the logged in user
    */
    getUser() {
-     return JSON.parse(localStorage.getItem('user'))  || '{"name":"dummy user"}';
+     return JSON.parse(localStorage.getItem('user'))  || '';
    }
 
 

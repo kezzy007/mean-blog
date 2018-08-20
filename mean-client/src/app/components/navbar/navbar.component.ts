@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login/services/login-service.service';
+import { RegisterService } from '../register/services/register.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit {
 
   loggedIn = false;
   displayForm = null;
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
               private loginService: LoginService,
+              private registerService: RegisterService,
               private router: Router
             ) { }
 
@@ -27,12 +29,48 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.hideDropDownOnWindowClicked()
 
+    this.registerListenerForSignupAndLogin()
+
   }
 
-  ngOnDestroy() {
+  /**
+   * Register a listener for new user registration and activates login
+   */
+  registerListenerForSignupAndLogin() {
 
-    console.log("destroy called")
+    const signupSubscription = 
+          this.registerService.notifyLoggedIn
+              .subscribe( ({ success }) => {
 
+                if(!success)return
+
+                this.setUserLoggedIn(true)
+
+                this.displayForm = null
+
+                signupSubscription.unsubscribe()
+                
+              })
+    
+    const loginSubscription = 
+          this.loginService.userLoggedIn
+              .subscribe( ({ success }) => {
+
+                if(!success)return
+
+                this.setUserLoggedIn(true)
+
+                this.displayForm = null
+
+                loginSubscription.unsubscribe()
+                
+              })
+  }
+
+  setUserLoggedIn(loginState){
+
+    this.loggedIn = loginState
+    
   }
 
   verifyUserLoggedIn() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { RegisterService } from './services/register.service'
-import {  ToasterService, ToasterConfig } from 'angular5-toaster';
+import {  ToasterService } from 'angular5-toaster';
+import { toasterConfiguration } from '../../configs'
 
 
 @Component({
@@ -11,7 +12,7 @@ import {  ToasterService, ToasterConfig } from 'angular5-toaster';
 export class RegisterComponent implements OnInit {
 
   signingUp = false
-  
+  toasterConfig = toasterConfiguration
   user = {
     username: '',
     email: '',
@@ -47,8 +48,6 @@ export class RegisterComponent implements OnInit {
     const regSubscription = this.registerService.registerUser(this.user)
         .subscribe( response => {
 
-          console.log(response)
-
           if(!response.success){
             
             this.displayToast('Registration failed', this.TOAST_OPTIONS.FAILURE)
@@ -59,35 +58,9 @@ export class RegisterComponent implements OnInit {
           // Store token and use for further requests
           this.displayToast('Registration successful', this.TOAST_OPTIONS.SUCCESS)
 
-          const { token, user } = response
-
-          this.storeTokenInLocalStorage(token)
-
-          this.storeUserInLocalStorage(user)
-
-          this.notifyUserLoggedIn()
-
           regSubscription.unsubscribe()
 
         })
-
-  }
-
-  notifyUserLoggedIn() {
-
-    this.registerService.notifyLoggedIn.emit('loggedIn')
-
-  }
-
-  storeTokenInLocalStorage(token) {
-
-    window.localStorage.setItem('token', token);
-
-  }
-
-  storeUserInLocalStorage(user) {
-
-    window.localStorage.setItem('user', JSON.stringify(user));
 
   }
 

@@ -8,7 +8,7 @@
                 <i class="fa fa-exclamation-triangle prefix grey-text"></i>
                 <input type="text" 
                         id="username" 
-                        class="form-control"
+                        class="form-control site-text-color input-field-border"
                         #usernameField
                         (focus)="usernameActive.classList.add('active')"
                         (blur)="usernameField.value == '' ? 
@@ -28,7 +28,7 @@
                 <i class="fa fa-exclamation-triangle prefix grey-text"></i>
                 <input type="email" 
                         id="materialFormRegisterConfirmEx" 
-                        class="form-control"
+                        class="form-control site-text-color"
                         #emailField
                         (focus)="emailActive.classList.add('active')"
                         (blur)="emailField.value == '' ? 
@@ -48,7 +48,7 @@
                 <i class="fa fa-lock prefix grey-text"></i>
                 <input type="password" 
                         id="materialFormRegisterPasswordEx" 
-                        class="form-control"
+                        class="form-control site-text-color"
                         #passwordField
                         (focus)="passwordActive.classList.add('active')"
                         (blur)="passwordField.value == '' ? 
@@ -68,7 +68,7 @@
                 <i class="fa fa-lock prefix grey-text"></i>
                 <input type="password" 
                         id="confirmPassword" 
-                        class="form-control"
+                        class="form-control site-text-color"
                         #confirmPasswordField
                         (focus)="confirmPasswordActive.classList.add('active')"
                         (blur)="confirmPasswordField.value == '' ? 
@@ -132,4 +132,4 @@
     </div>
 </div>
 
-<!-- <toaster-container [toasterconfig]="toasterconfig"></toaster-container> -->
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

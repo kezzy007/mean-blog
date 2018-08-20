@@ -30,8 +30,15 @@ import { RegisterComponent } from './components/register/register.component';
 
 
 const routes: Routes =  [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
+  {
+    path: '', 
+    redirectTo: 'home', 
+    pathMatch: 'full'
+  },
+  {
+    path: 'home', 
+    component: HomeComponent
+  },
   {
     path: 'admin/login',
     component: LoginComponent

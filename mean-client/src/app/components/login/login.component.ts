@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {  ToasterService, ToasterConfig } from 'angular5-toaster';
+import {  ToasterService } from 'angular5-toaster';
 import { Router } from '@angular/router';
 
 import { LoginService } from './services/login-service.service';
@@ -50,11 +50,6 @@ export class LoginComponent implements OnInit {
 
   userData = '';
   
-  public toasterconfig: ToasterConfig =  new ToasterConfig({
-      showCloseButton: true,
-      tapToDismiss: true,
-      timeout: 3000
-  });
 
   constructor(
               private router: Router,
@@ -74,14 +69,13 @@ export class LoginComponent implements OnInit {
 
   checkIfLoggedIn() {
 
+
     if (!localStorage.getItem('user')) {
       this.loggingIn = false;
       return;
     }
 
     this.displayLogoutButton();
-
-    this.redirectToDashboard();
 
   }
 
@@ -101,12 +95,6 @@ export class LoginComponent implements OnInit {
     this.loginService.userLoggedIn.emit(true);
   }
 
-  redirectToDashboard() {
-
-    this.router.navigateByUrl('/dashboard');
-
-  }
-
   onSubmit(){
 
     // console.log(this.user);
@@ -124,11 +112,10 @@ export class LoginComponent implements OnInit {
             return;
           }
 
-          this.storeTokenInLocalStorage(response.token);
+          const { user } = response
 
-          this.storeUserInLocalStorage(response.user);
-
-          this.router.navigateByUrl('/dashboard');
+          // if(user.role)
+          // this.router.navigateByUrl('/dashboard');
 
         });
 

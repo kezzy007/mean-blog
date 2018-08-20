@@ -55,8 +55,6 @@ router.post('/register', async (req, res) => {
 
     await newUser.save().catch( err => console.log(err) )
 
-    console.log(newUser)
-
     const token = signTokenWithUser(newUser)
 
     const user = {
@@ -84,12 +82,7 @@ router.post('/authenticate', async (req, res) => {
 
     const user = await userModel.findOne({ 
                                             email 
-                                        },
-                                        {
-                                            password: 0    
                                         })
-
-    console.log(user)
                                         
     if(user === null) return { success: false }
 
@@ -101,11 +94,11 @@ router.post('/authenticate', async (req, res) => {
         token = await signTokenWithUser(user)
     }
 
-    return { 
+    return res.json({ 
              ...token, 
              user, 
              success: (passwordMatches ? true : false )
-            }    
+            })    
 
 })
 

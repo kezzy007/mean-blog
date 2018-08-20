@@ -18,7 +18,15 @@ export class RegisterService {
   registerUser( user ): Observable<any> {
 
     return this.http.post<any>(`${this.host}/users/register`, { user })
-                .map( response => response )
+                .map( response =>{
+                  
+                    if(response.success){
+                      this.notifyLoggedIn.emit({ ...response });
+                    }
+                  
+                    return response 
+                  
+                  })
 
   }
 }
