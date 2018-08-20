@@ -2,3 +2,21 @@
     height: 8vh;
     max-height: 8vh;
 }
+
+@media screen and (max-width: 768px){
+    .enlarge-dropdown{
+        width: 13rem !important;
+        position: fixed !important;
+        left: 5rem !important;
+    }
+}
+
+@media screen and (min-width: 767px){
+    .enlarge-dropdown{
+        width: 28% !important;
+        position: fixed !important;
+        left: 72% !important;
+        top: 8vh;
+        display: initial;
+    }
+}

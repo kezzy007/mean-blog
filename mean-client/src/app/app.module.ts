@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 
 import { LoginService } from './components/login/services/login-service.service';
 import { HomeService } from './components/home/services/home.service';
+import { RegisterService } from './components/register/services/register.service';
 
 import
   {
@@ -24,11 +25,17 @@ import
     FacebookLoginProvider 
   } 
 from 'angular5-social-login';
+import { FooterComponent } from './components/footer/footer.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 const routes: Routes =  [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent}
+  {path: 'home', component: HomeComponent},
+  {
+    path: 'admin/login',
+    component: LoginComponent
+  }
 ];
 
 // Configs 
@@ -53,7 +60,9 @@ export function getAuthServiceConfigs() {
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    FooterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +80,8 @@ export function getAuthServiceConfigs() {
       useFactory: getAuthServiceConfigs
     },
     LoginService,
-    HomeService
+    HomeService,
+    RegisterService
   ],
   bootstrap: [AppComponent]
 })

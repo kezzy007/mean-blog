@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  ToasterService, ToasterConfig } from 'angular5-toaster';
 import { Router } from '@angular/router';
@@ -20,12 +20,21 @@ import {
 
 export class LoginComponent implements OnInit {
 
+  @Input() isDropdown; 
   userForm;
   
   user = { email: '', password: '' };
 
-  loggedIn = true;
+  loggingIn = false;
   
+  loadingIconProps = {
+    height: '1.5rem',
+    width: '7px',
+    'transform-origin': '6px 4px',
+    '-webkit-transform-origin': '6px 4px',
+    top: '0px'
+  }
+
   TOAST_OPTIONS = {
     SUCCESS: {
         text: 'CLOSE',
@@ -58,14 +67,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
-    this.checkIfLoggedIn();
+    this.checkIfLoggedIn()
 
   }
+
 
   checkIfLoggedIn() {
 
     if (!localStorage.getItem('user')) {
-      this.loggedIn = false;
+      this.loggingIn = false;
       return;
     }
 
@@ -74,6 +84,18 @@ export class LoginComponent implements OnInit {
     this.redirectToDashboard();
 
   }
+
+  doConsole(param) {
+
+    console.log(param)
+
+  }
+
+  // setLoadingIconHeight(heightValue) {
+
+  //   this.loadingIconHeight = heightValue
+
+  // }
 
   displayLogoutButton() {
     this.loginService.userLoggedIn.emit(true);
@@ -88,6 +110,9 @@ export class LoginComponent implements OnInit {
   onSubmit(){
 
     // console.log(this.user);
+    this.loggingIn = true
+
+    // this.setLoadingIconHeight('20px')
 
     this.loginService.login(this.user)
         .subscribe((response) => {

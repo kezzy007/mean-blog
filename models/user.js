@@ -24,7 +24,8 @@ const UserSchema = mongoose.Schema({
     },
     'role':  {
         type: String,
-        required: true
+        required: true,
+        default: 'user'
     },
     'googleId':{
         type: String,
@@ -42,3 +43,9 @@ const UserSchema = mongoose.Schema({
 });
 
 const User = module.exports = mongoose.model('Users', UserSchema);
+
+module.exports.getUserById = async _id => {
+
+    return await User.findById({ _id })
+
+}
