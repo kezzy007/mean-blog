@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
+const passportJWT = require('./config/passport-jwt')
 const cookieSession = require('cookie-session');
 
 const socketIo = require('socket.io');
@@ -53,12 +54,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+passportJWT(passport)
 
 // Body parser config
 app.use(bodyParser.json());
 
-// Passport config
-app.use(passport.initialize());
 
 // Admin routes configuration
 app.use('/admin', adminRoutes);

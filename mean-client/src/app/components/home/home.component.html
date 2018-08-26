@@ -1,52 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Blog</title>
-
-  </head>
- 
-  <style>
-    body {
-      padding-top: 54px;
-    }
-
-    @media (min-width: 992px) {
-      body {
-        padding-top: 56px;
-      }
-      nav .container{
-        align-items: center
-      }
-    }
-  </style>
-
-  <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">My Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link btn btn-default" href="#">Logout
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <app-navbar></app-navbar>
 
     <!-- Page Content -->
     <div class="container">
@@ -54,7 +8,7 @@
       <div class="row" *ngIf="blogPosts?.length > 0">
 
         <!-- Post Content Column -->
-        <div class="col-lg-7 offset-lg-1 col-sm-12 col-md-12 mb-4" 
+        <div class="offset-lg-1 col-sm-12 col-md-7 mb-4" 
              *ngFor="let blogPost of blogPosts; index as i;" 
              id="post{{ blogPost._id }}">
 
@@ -140,7 +94,7 @@
             </div>
           </div>
           </div>
-      </div>
+        </div>
 
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
@@ -192,14 +146,6 @@
     </div>
     <!-- /.container -->
 
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Qasim AbdulKadir projects</p>
-      </div>
-      <!-- /.container -->
-    </footer>
+    <app-footer>
+    </app-footer>
 
-  </body>
-
-</html>

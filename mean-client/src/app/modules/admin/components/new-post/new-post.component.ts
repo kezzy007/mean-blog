@@ -20,11 +20,13 @@ export class NewPostComponent implements OnInit {
     description: '',
     featured: false,
     tags: [],
-    category: null,
+    category: '',
     status: '',
     content: ''
   };
   
+  validationErrors = {}
+
   tinymceConfig = {
     max_width: '1000',
     min_height: '200'
@@ -41,10 +43,7 @@ export class NewPostComponent implements OnInit {
     private newPostService: NewPostService,
     private postService: PostService,
     private toasterService: ToasterService
-  ) { 
-
-
-  }
+  ) {   }
 
   ngOnInit() {
 
@@ -69,9 +68,9 @@ export class NewPostComponent implements OnInit {
     
     this.categories = 
         this.categories.filter( 
-              category => 
-              category._id !== this.postToEdit.category._id
-            )
+                        category => 
+                        category._id !== this.postToEdit.category._id
+                      )
 
     this.categories.unshift(this.postToEdit.category)
 
@@ -112,7 +111,26 @@ export class NewPostComponent implements OnInit {
     return JSON.parse(localStorage.getItem('user'));
   }
 
+  validateForm() {
+
+    Object.keys(this.form).forEach( formField => {
+
+      if( (formField === 'tags') || (formField === 'slug'))return
+
+      if(this.form[formField] === ''){
+        this.validationErrors[formField] = `${formField} is required`
+      }
+        
+    })
+
+    //return true if validationerror object has at least one key
+    return Object.keys(this.validationErrors).length === 0
+
+  }
+
   savePost() {
+
+    if(!this.validateForm()) return
 
     this.generatePostSlug();
 
@@ -123,7 +141,9 @@ export class NewPostComponent implements OnInit {
           
           //return if failed
           if(!response.success) {
-            (this.displayToast('error', 'Update failed'))
+            
+            this.displayToast('error', 'Update failed')
+
             return
           }
 

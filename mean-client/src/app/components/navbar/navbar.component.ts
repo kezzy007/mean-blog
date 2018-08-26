@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login/services/login-service.service';
+import { RegisterService } from '../register/services/register.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,13 +11,69 @@ import { LoginService } from '../login/services/login-service.service';
 export class NavbarComponent implements OnInit {
 
   loggedIn = false;
+  displayForm = null;
+  navbarDropDowns = {
+    LOGIN_FORM: 'loginForm',
+    SIGNUP_FORM: 'signupForm',
+  }
 
   constructor(
               private loginService: LoginService,
+              private registerService: RegisterService,
               private router: Router
             ) { }
 
   ngOnInit() {
+
+    this.verifyUserLoggedIn()
+
+    this.hideDropDownOnWindowClicked()
+
+    this.registerListenerForSignupAndLogin()
+
+  }
+
+  /**
+   * Register a listener for new user registration and activates login
+   */
+  registerListenerForSignupAndLogin() {
+
+    const signupSubscription = 
+          this.registerService.notifyLoggedIn
+              .subscribe( ({ success }) => {
+
+                if(!success)return
+
+                this.setUserLoggedIn(true)
+
+                this.displayForm = null
+
+                signupSubscription.unsubscribe()
+                
+              })
+    
+    const loginSubscription = 
+          this.loginService.userLoggedIn
+              .subscribe( ({ success }) => {
+
+                if(!success)return
+
+                this.setUserLoggedIn(true)
+
+                this.displayForm = null
+
+                loginSubscription.unsubscribe()
+                
+              })
+  }
+
+  setUserLoggedIn(loginState){
+
+    this.loggedIn = loginState
+    
+  }
+
+  verifyUserLoggedIn() {
 
     if ( this.getUser() ) {
       this.loggedIn = true;
@@ -28,6 +85,75 @@ export class NavbarComponent implements OnInit {
       this.loggedIn = loggedIn;
 
     });
+
+  }
+
+  hideDropDownOnWindowClicked() {
+
+    const { LOGIN_FORM, SIGNUP_FORM } = this.navbarDropDowns
+
+    // window.addEventListener('click', event => {
+
+    //   const matchFound = event.path.find( element => {
+
+    //     if( (element.classList !== undefined) && 
+    //         (element.classList.contains('enlarge-dropdown'))
+    //       ){
+    //         return true
+    //       } 
+
+    //     return false
+
+    //   })
+
+    //   console.log(matchFound, this.displayForm)
+
+    //   if(matchFound && (this.displayForm !== null) ){
+    //     console.log('removing')
+    //       this.displayForm = null
+    //   }
+
+    //   // if(event.path.contains('div.dropdown-menu.dropdown.dropdown-primary.enlarge-dropdown.py-5.ng-star-inserted')){
+
+    //   //   console.log('In')
+    //   //   if( (this.displayForm !== LOGIN_FORM) || (this.displayForm !== SIGNUP_FORM) ){
+       
+    //   //     console.log(this.displayForm)
+
+    //   //     return
+          
+    //   //   }
+        
+    //   //   console.log('removing')
+
+
+
+    //   // }
+      
+
+    // })
+
+  }
+
+  toggleNavbarDropdown(dropdown) {
+
+    
+    switch(dropdown){
+
+      case this.navbarDropDowns.LOGIN_FORM:
+        const {LOGIN_FORM} = this.navbarDropDowns
+        this.displayForm = this.displayForm === LOGIN_FORM ? null : LOGIN_FORM 
+        break
+
+      case this.navbarDropDowns.SIGNUP_FORM:
+        const {SIGNUP_FORM} = this.navbarDropDowns
+        this.displayForm = this.displayForm === SIGNUP_FORM ? null : SIGNUP_FORM 
+        break
+        
+      default:
+        break
+
+    }
 
   }
 

@@ -1,15 +1,12 @@
 
   <div class="row mx-0">
     <div class="col-12 justify-content-start">
-
+      <br/>
       <!--This section holds the post title field, update and preview buttton -->
-      <div class="row py-4 align-items-center">
-        <div class="col-md-1 col-sm-4 ml-0 pt-1">
-             <h4>Post:</h4>
-        </div>
+      <div class="row pt-4 pb-1 align-items-center">
 
         <!-- Post title -->
-        <div class="col-md-5 col-sm-8 pl-0 ml-1">
+        <div class="col-md-6 col-sm-8 pr-0 ">
           <input class="form-control pull-left pb-0" 
                   type="text"
                   id="title" 
@@ -19,13 +16,18 @@
                   placeholder="Post title" 
                   required/>
         </div>
-        <div class="col-md-2 col-sm-4">
+        
+        <!-- Posting as {{ name }} -->
+        <div class="col-md-3 col-sm-4">
           <div class="media">
             <div class="media-body" style="padding-top:4%;">
-               <!-- Write either editing or posting -->  <span class="text-bold">{{ getUser()?.name }}</span> 
+                <span class="text-bold">
+                  {{ postToEdit ? 'Editing as' : 'Posting as' }}: {{ getUser()?.username }}
+                </span> 
             </div>
           </div>
         </div>
+
         <div class="col-md-3 col-sm-8 d-flex justify-content-end">
 
           <button class="btn btn-success" id="save_post_button"
@@ -34,6 +36,15 @@
             <!-- Write either updating or save -->
           </button>
         </div><!--Buttons for saving and previewing posts are placed here-->
+      </div>
+
+      <!-- Error displayed for not providing a title -->
+      <div class="row justify-content-start pb-2" 
+           style="padding-left: 15px"
+           *ngIf="validationErrors.title">
+          <div class="col-md-5 col-sm-8 pr-0 alert alert-danger">
+            {{ validationErrors.title }}
+          </div>
       </div>
 
       <div class="row ">
@@ -65,6 +76,7 @@
                     <option>No categories found</option>
                 </select>
               </div>
+              
 
               <!-- Holds the state of the featured star check icon -->
               <input id="featured" 
@@ -92,6 +104,17 @@
                   
                   </div>
               </div>
+            </div>
+
+            <!-- Error displayed for not choosing a category -->
+            <div class="row justify-content-start pb-2"
+                 style="padding-left: 15px"
+                 *ngIf="validationErrors.category">
+
+                <div class="col-md-5 col-sm-8 pr-0 alert alert-danger">
+                  {{ validationErrors.category }}
+                </div>
+
             </div>
 
             <!-- Description and status field -->
@@ -143,9 +166,22 @@
                     </div>
                   </div>
               </div>
+
+              <div class="col-12">
+                <!-- Error displayed for not providing a description -->
+                <div class="row justify-content-start pb-2" 
+                     style="padding-left: 15px"
+                     *ngIf="validationErrors.description">
+
+                    <div class="col-md-5 col-sm-8 pr-0 alert alert-danger">
+                      {{ validationErrors.description }}
+                    </div>
+
+                </div>
+              </div>
   
                <!--This section holds the editor-->
-               <div class="col-12 pr-0" style="padding-top:2%; padding-left: 15px;">
+              <div class="col-12 pr-0" style="padding-top:2%; padding-left: 15px;">
                 
                 <angular-tinymce 
                     [(ngModel)]='form.content'
@@ -153,10 +189,24 @@
                 </angular-tinymce>
 
               </div>
+
+              <div class="col-12">
+                  <!-- Error displayed for not providing post content -->
+                  <div class="row justify-content-start pb-2" 
+                        style="padding-left: 15px"
+                       *ngIf="validationErrors.content">
+                      
+                      <div class="col-md-5 col-sm-8 pr-0 alert alert-danger">
+                        {{ validationErrors.content }}
+                      </div>
+
+                  </div>
+                </div>
+
             </div>
           </div>
 
-          <!--Sidebar is placed here with some tweaking functionalities for the admin-->
+          <!--Sidebar is placed here containing tags-->
         <div class="col-md-3 col-sm-12 mx-0">
             <aside class="sidebar">
   
@@ -177,19 +227,11 @@
                 </div>
               </div>
 
-              <div *ngIf="!tags?.length > 0"  class="row">
+              <div *ngIf="!tags?.length > 0"  class="row mx-0">
                 *No tags available.
               </div>
-  
             </aside>
-  
-            <!--This sets the content of the blog post to edit in an hidden div and waits until the editor is loaded-->
-            <div style="display:none;" id="editPostContent">
-              <!-- @if(isset($blog_post))
-                {!! $blog_post->content !!}
-              @endif -->
-            </div>
-            <!-- <div id="editPostId" style="display:none;">{{ isset($blog_post) ? $blog_post->id:'' }}</div> -->
+
           </div>
       </div>
 

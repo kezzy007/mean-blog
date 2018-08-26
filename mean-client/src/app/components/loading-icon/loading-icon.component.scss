@@ -1,3 +1,9 @@
+:host{
+  width: 20%;
+  height: 100%;
+  position: relative;
+}
+
 @keyframes lds-spinner {
     0% {
       opacity: 1;
@@ -18,9 +24,9 @@
     position: relative;
   }
   .lds-spinner div {
-    left: 94px;
-    top: 48px;
-    position: absolute;
+    // left: 94px;
+    // top: 48px;
+    // position: absolute;
     -webkit-animation: lds-spinner linear 1s infinite;
     animation: lds-spinner linear 1s infinite;
     background: #1c98d9;
@@ -103,8 +109,8 @@
     animation-delay: 0s;
   }
   .lds-spinner {
-    width: 200px !important;
-    height: 200px !important;
+    width: 7rem !important;
+    height: auto !important;
     -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
     transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
   }

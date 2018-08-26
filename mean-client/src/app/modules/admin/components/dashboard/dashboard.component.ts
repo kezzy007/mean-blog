@@ -30,13 +30,23 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  verifyUserAuthenticated() {
+
+    return (JSON.parse(localStorage.getItem('user')) !== undefined) 
+            && (localStorage.getItem('token') !== undefined)
+
+  }
+
   authenticateUser() {
+
+    this.authenticated = this.verifyUserAuthenticated()
 
     if(!this.authenticated){
 
       this.router.navigateByUrl('/admin/login')
 
     }
+
 
   }
 
