@@ -29,7 +29,21 @@
               </span>
 
             </p>
-          <!-- </div> -->
+          
+            <!-- Tags for posts listed here -->
+          <span class="post-tags-list my-1 d-flex align-items-center justify-content-start"
+              *ngIf="blogPost.tags.length > 0">
+         
+            <h6 class="bg-grey text-white tags-header mr-1">Tags: </h6> {{ '   ' }}
+
+            <!-- Loop to display tags -->
+            <span *ngFor="let postTag of blogPost.tags; index as i">
+                <a [routerLink]="['../../','tags', postTag.slug]" class="link-decoration-none mr-1">
+                  {{ ucFirst(postTag.name) }}<span *ngIf="i < (blogPost.tags.length -1)">,</span>
+                </a>
+            </span> 
+
+          </span>
 
 
           <!-- Post Content -->
@@ -47,7 +61,7 @@
           </p>
 
           <!-- Comments Form -->
-          <div class="card my-4">
+          <div class="card my-4" *ngIf="loggedIn">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
               <form (ngSubmit)="$event.preventDefault();">
@@ -65,21 +79,29 @@
 
                 </div>
 
-                <button type="button" class="btn btn-primary" (click)="submitComment(blogPost._id)">Comment</button>
+                <div class="form-inline">
+                  <button type="button" 
+                          class="btn btn-primary" 
+                          (click)="submitComment(blogPost._id)">
+                          Comment
+                  </button>
+
+                  <!-- Commenting notification -->
+                  <div class="commenting-notification d-none">
+                    <span class="text-grey">Someone is typing a comment</span>
+                  </div>
+                </div>
 
               </form>
 
-              <!-- Commenting notification -->
-              <div class="commenting-notification d-none">
-                <span class="text-grey">Someone is typing a comment</span>
-              </div>
+              
             </div>
           </div>
 
 
           <!-- Comment with nested comments -->
           <div class="d-flex" *ngIf="blogPostsComments?.length > 0">
-            <div class="row">
+            <div class="row comment-list">
               <div class="media mb-4 col-12"
                     *ngFor="let comment of getBlogPostComments(blogPost._id);
                             index as i; 
@@ -87,8 +109,13 @@
                             
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="user's image">
                 <div class="media-body">
-                  <h5 class="mt-0"> {{ comment.user?.name }}</h5>
-                  {{ comment.comment }}                  
+                  
+                  <h3 class="mt-0 text-bold"> {{ comment.user?.username }} 
+                    <span class="ml-3" style="font-size: 0.6em;">{{ comment.updatedAt | amDateFormat:'MMMM Do YYYY, h:mm a' }}</span>
+                  </h3>
+
+                    {{ comment.comment }}                  
+
                 </div>
               </div>
             </div>
@@ -120,7 +147,7 @@
                 <div class="col-lg-6">
                   <ul class="list-unstyled mb-0">
                     <li *ngFor="let blogCategory of blogCategories">
-                      <a [routerLink]="['categories', blogCategory.slug ]">
+                      <a [routerLink]="['../../', 'categories', blogCategory.slug ]">
                         {{ blogCategory.name }}
                       </a>
                     </li>
@@ -129,6 +156,8 @@
               </div>
             </div>
           </div>
+
+          
 
           <!-- Side Widget -->
           <!-- <div class="card my-4">

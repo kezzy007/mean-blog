@@ -17,10 +17,11 @@ var userSocket = null;
 const postsModel = require('../models/posts');
 const categoriesModel =  require('../models/categories');
 const commentsModel = require('../models/comments');
+const tagsModel = require('../models/tags');
 const userModel = require('../models/user')
 
 
-function signTokenWithUser({ _id, username, email, role }) {
+signTokenWithUser = ({ _id, username, email, role }) => {
 
     // Create token
     let token = jwt.sign({ _id, username, email, role }, config.secret, {
@@ -29,6 +30,87 @@ function signTokenWithUser({ _id, username, email, role }) {
 
     return {'token': `bearer ${token}` };
 }
+
+returnPostsCategoriesCommentsTags = ( 
+    postsPromise, 
+    categoriesPromise,
+    commentsPromise,
+    tagsPromise,
+    res
+) => {
+
+    Promise.all([
+        postsPromise, 
+        categoriesPromise,
+        commentsPromise,
+        tagsPromise
+    ])
+    .then((result) => {
+
+        return res.json({
+                         success: true, 
+                         posts: result[0], 
+                         categories: result[1],
+                         comments: result[2],
+                         tags: result[3]
+                        });
+
+    })
+    .catch(err => {
+        console.log(err)
+        return res.json({ success: false })
+    });
+
+}
+
+router.get('/categories/:categorySlug', async (req, res) => {
+
+    const { categorySlug } = req.params
+
+    const postsPromise = postsModel.find({ 'category.slug': categorySlug })
+                                    .catch(err => {
+                                        return res.json({ success: false })
+                                    })
+    const categoriesPromise = categoriesModel.getAllCategories();
+    const commentsPromise = commentsModel.getAllComments();
+    const tagsPromise = tagsModel.getAllTags();
+
+    returnPostsCategoriesCommentsTags( 
+        postsPromise, 
+        categoriesPromise,
+        commentsPromise,
+        tagsPromise,
+        res
+    )
+
+})
+
+router.get('/tags/:tagSlug', async (req, res) => {
+
+    const { tagSlug } = req.params
+
+    const postsPromise = postsModel.find({ 'tags':{
+                                                    $elemMatch: {
+                                                        slug: tagSlug
+                                                    }
+                                                } 
+                                         })
+                                    .catch(err => {
+                                        return res.json({ success: false })
+                                    })
+    const categoriesPromise = categoriesModel.getAllCategories();
+    const commentsPromise = commentsModel.getAllComments();
+    const tagsPromise = tagsModel.getAllTags();
+
+    returnPostsCategoriesCommentsTags( 
+        postsPromise, 
+        categoriesPromise,
+        commentsPromise,
+        tagsPromise,
+        res
+    )
+
+})
 
 router.post('/register', async (req, res) => {
 
@@ -107,22 +189,17 @@ router.get('/posts',(req, res) => {
     const postsPromise = postsModel.getAllPublishedPosts();
     const categoriesPromise = categoriesModel.getAllCategories();
     const commentsPromise = commentsModel.getAllComments();
+    const tagsPromise = tagsModel.getAllTags();
 
-    Promise.all([
+
+    returnPostsCategoriesCommentsTags( 
         postsPromise, 
         categoriesPromise,
-        commentsPromise
-    ])
-    .then((result) => {
-
-        return res.json({success: true, 
-                         posts: result[0], 
-                         categories: result[1],
-                         comments: result[2]
-                        });
-
-    })
-    .catch(err => console.log(err));
+        commentsPromise,
+        tagsPromise,
+        res
+    )
+  
 
 });
 

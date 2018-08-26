@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MomentModule } from 'angular2-moment'
 import { SharedModule } from './shared.module';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -37,6 +38,14 @@ const routes: Routes =  [
   },
   {
     path: 'home', 
+    component: HomeComponent
+  },
+  {
+    path: 'categories/:category-slug', 
+    component: HomeComponent
+  },
+  {
+    path: 'tags/:tag-slug', 
     component: HomeComponent
   },
   {
@@ -77,6 +86,7 @@ export function getAuthServiceConfigs() {
     FormsModule,
     ReactiveFormsModule,
     SocialLoginModule,
+    MomentModule,
     SharedModule,
     AdminModule,
     RouterModule.forRoot(routes)

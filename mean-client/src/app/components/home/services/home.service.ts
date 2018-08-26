@@ -12,9 +12,12 @@ export class HomeService {
 
   constructor(private http: HttpClient) { }
 
-  getBlogPosts(): Observable<any> {
+  getBlogPosts(url): Observable<any> {
 
-    return this.http.get<any>(this.host + '/users/posts').map(response => response);
+    const fetchUrl = (url !== null) ? (url.join('/')) : 'posts'
+
+    return this.http.get<any>(this.host + `/users/${fetchUrl}`)
+              .map(response => response);
 
   }
 

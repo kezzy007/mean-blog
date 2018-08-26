@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import * as io from 'socket.io-client';
 import { RegisterService } from '../register/services/register.service';
 import { LoginService } from '../login/services/login-service.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
   blogPosts;
   blogCategories = [];
   blogPostsComments = [];
+  blogTags = []
   newPostComment; 
   isCommenting = {
     newComment: false,
@@ -29,16 +31,44 @@ export class HomeComponent implements OnInit {
   constructor(
     private homeService: HomeService,
     private registerService: RegisterService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: ActivatedRoute
   ) { 
-
+    this.checkRouteUrl()
   }
 
   ngOnInit() {
 
-    this.getBlogPostsAndComments()
+    this.verifyUserAuthenticated()
     this.registerSocketListeners()
     this.registerListenerForSignupAndLogin()
+
+  }
+
+  verifyUserAuthenticated = () => {
+
+    this.loggedIn = this.getUser() !== '' ? true: false 
+
+  }
+
+  /**
+   * Changes the first character to uppercase
+   */
+  ucFirst = (value: string) => {
+
+    let valueArray = value.split('')
+
+    const newValue = `${valueArray.shift().toString().toUpperCase()}${valueArray.join('')}`
+
+    return newValue
+  }
+
+  /**
+   * Returns date from a mongodb date timestamp
+   */
+  getDate(dateTime) {
+
+    return dateTime.split('T')[0]
 
   }
 
@@ -101,17 +131,48 @@ export class HomeComponent implements OnInit {
   }
 
   /**
+   * 
+   */
+  checkRouteUrl() {
+
+    this.router.url.subscribe( urlSegments => {
+
+      let urlType: any[] = []
+      
+      if(new RegExp(/categories/, 'ig').test(urlSegments[0].path)){
+
+        urlType = ['categories', urlSegments[1].path]
+
+      }else if (new RegExp(/tags/, 'ig').test(urlSegments[0].path)){
+
+        urlType = ['tags', urlSegments[1].path]
+
+      }
+
+      if( urlType.length > 0 ){
+        this.getBlogPostsAndComments(urlType)
+        return
+      }
+
+      this.getBlogPostsAndComments(null)
+
+    })
+    
+  }
+
+  /**
    * Fetches blog posts, categories, tags and comments.
    */
 
-  getBlogPostsAndComments() {
+  getBlogPostsAndComments(url) {
 
-    const blogPostSubscription = this.homeService.getBlogPosts()
+    const blogPostSubscription = this.homeService.getBlogPosts(url)
         .subscribe(response => {
 
           this.blogPosts = response.posts;
           this.blogCategories = response.categories;
           this.blogPostsComments = response.comments;
+          this.blogTags = response.tags;
 
           blogPostSubscription.unsubscribe();
 
@@ -120,9 +181,12 @@ export class HomeComponent implements OnInit {
   }
 
   getBlogPostComments(postId) {
-    return this.blogPostsComments.filter( 
+    
+    const comments = this.blogPostsComments.filter( 
       comment => comment.post_id === postId
     )
+
+    return comments
   }
 
   /**
@@ -187,8 +251,6 @@ export class HomeComponent implements OnInit {
     postContainer.innerHTML = postContent
 
     const element = $event.target
-    
-    console.log(element)
 
     element.tagName.toUpperCase() === "BUTTON" ? 
       element.style.display = "none" :

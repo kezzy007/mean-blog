@@ -11,3 +11,30 @@
 .site-text-color{
     color: $siteColor
 }
+
+.tags-header{
+    padding: 0.2em 0.2em;
+    border-radius: 2px;
+    margin-bottom: 0px;
+}
+
+.post-tags-list{
+    color: #FF8800
+}
+
+.link-decoration-none{
+    color: inherit !important;
+
+    &:hover{
+        color: #FF8808
+    }
+}
+
+.commenting-notification{
+    color: $siteColor
+}
+
+.comment-list{
+    max-height: 169px !important;
+    overflow: hidden;
+}
